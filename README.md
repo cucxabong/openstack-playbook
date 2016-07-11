@@ -1,6 +1,6 @@
 Short Description
 -----------------
-A `unofficial fork` from the official openstack ansible playbooks to install Openstack components from the official repository (The original using `git` and github to build Openstack from source code). 
+A `unofficial fork` from the official openstack ansible playbooks to install Openstack components from [the official repository](github.com/openstack/openstack-ansible) (The original using `git` and github to build Openstack from source code). 
 
 All packages will be installed from appropriate repository except `python-openstackclient` because of  ([here] (https://bugs.launchpad.net/python-openstackclient/+bug/1560157) ignoring `--insecure` flag that leads to fail in verifing SSL certificate (in case of using self-signed)
 
