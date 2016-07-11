@@ -1,0 +1,20 @@
+---
+- name: remove mailformed ip address
+  lineinfile:
+    regexp: (?<!{{ hostvars[item].ansible_host }})\s+{{ item }}
+    state: absent
+    dest: "/etc/hosts"
+  with_items: "{{ groups['all'] }}"
+
+- name: remove mailformed hostname
+  lineinfile:
+    regexp: '^{{ hostvars[item].ansible_host }}\s+(?!{{ item }})'
+    state: absent
+    dest: "/etc/hosts"
+  with_items: "{{ groups['all'] }}"
+
+- name: add appropriate ip <=> hostname mapping
+  lineinfile:
+    line: "{{ hostvars[item].ansible_host }} {{ item }}"
+    dest: "/etc/hosts"
+  with_items: "{{ groups['all'] }}"

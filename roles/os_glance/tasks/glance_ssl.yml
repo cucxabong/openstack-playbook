@@ -1,0 +1,4 @@
+
+
+- include: glance_ssl_self_signed.yml
+  when: glance_ssl_user_cert is not defined or glance_ssl_user_key is not defined

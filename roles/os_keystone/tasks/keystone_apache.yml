@@ -1,0 +1,56 @@
+---
+- name: enable keystone ports on apache2
+  lineinfile:
+    dest: "/etc/apache2/ports.conf"
+    line: "Listen {{ item | int }}"
+  with_items:
+    - "{{ keystone_admin_port }}"
+    - "{{ keystone_service_port }}"
+
+- name: reserved keystone TCP admin port
+  sysctl:
+    name: net.ipv4.ip_local_reserved_ports
+    value: "{{ keystone_admin_port | int }}"
+
+- name: Place apache2 config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "keystone-httpd.conf.j2", dest: "/etc/apache2/sites-available/keystone-httpd.conf" }
+  notify:
+    - Restart Apache
+
+- name: Disable default apache site
+  file:
+    path: "/etc/apache2/sites-enabled/000-default.conf"
+    state: "absent"
+  notify:
+    - Restart Apache
+
+- name: Enabled keystone vhost
+  file:
+    src: "/etc/apache2/sites-available/keystone-httpd.conf"
+    dest: "/etc/apache2/sites-enabled/keystone-httpd.conf"
+    state: "link"
+  notify:
+    - Restart Apache
+
+- name: Ensure Apache ServerName
+  lineinfile:
+    dest: "/etc/apache2/apache2.conf"
+    line: "ServerName {{ ansible_hostname }}"
+  notify:
+    - Restart Apache
+
+- name: enable/disable apache2 ssl module
+  apache2_module:
+    name: ssl
+    state: "{{ (keystone_service_proto == 'https') | ternary('present', 'absent')}}"
+  notify:
+    - Restart Apache
+
+- include: keystone_ssl.yml
+  when: keystone_service_proto == "https"

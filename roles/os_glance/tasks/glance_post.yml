@@ -1,0 +1,11 @@
+---
+- include: glance_service_setup.yml
+  when: inventory_hostname == groups['glance'][0]
+
+- include: glance_configure.yml
+
+- include: glance_db_setup.yml
+  when: inventory_hostname == groups['glance'][0]
+
+- include: glance_ssl.yml
+  when: glance_service_proto == "https"

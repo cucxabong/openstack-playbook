@@ -1,0 +1,38 @@
+---
+- name: ensure nova ssl dir exists
+  file:
+    path: "{{ nova_ssl_dir }}"
+    state: "directory"
+    owner: "{{ nova_system_user }}"
+    group: "{{ nova_system_group }}"
+
+- name: remove old self-signed cert for regen
+  file:
+    path: "{{ item }}"
+    state: absent
+  when: nova_ssl_self_signed_regen | bool
+  with_items:
+    - "{{ nova_ssl_cert }}"
+    - "{{ nova_ssl_key }}"
+
+- name: create self-signed ssl certificate
+  command: >
+    openssl req -new -nodes -sha256 -x509 -subj 
+    "{{ nova_ssl_self_signed_subject }}"
+    -days 3650
+    -keyout "{{ nova_ssl_key }}"
+    -out "{{ nova_ssl_cert }}"
+    -extensions v3_ca
+    creates="{{ nova_ssl_cert }}"
+  notify: restart nova controller services
+
+- name: ensure nova user owns the self-signed key and certificate
+  file:
+    path: "{{ item }}"
+    owner: "{{ nova_system_user }}"
+    group: "{{ nova_system_group }}"
+    mode: 0640
+  with_items:
+    - "{{ nova_ssl_cert }}"
+    - "{{ nova_ssl_key }}"
+  notify: restart nova controller services

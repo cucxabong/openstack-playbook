@@ -1,0 +1,7 @@
+[DEFAULT]
+interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+enable_isolated_metadata = True
+
+dhcp_domain = {{ neutron_dhcp_domain }}
+dnsmasq_config_file = {{ neutron_dnsmasq_config_file }}

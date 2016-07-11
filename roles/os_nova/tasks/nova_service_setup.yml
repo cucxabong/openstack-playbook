@@ -1,0 +1,65 @@
+---
+
+- name: Create Identity user for Compute Service
+  keystone:
+    command: "ensure_user"
+    user_name: "{{ nova_service_user }}"
+    password: "{{ nova_service_password }}"
+    domain_name: "{{ nova_service_user_domain }}"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+  no_log: True
+
+- name: create user-role mapping
+  keystone:
+    command: "ensure_user_role"
+    user_name: "{{ nova_service_user }}"
+    project_name: "{{ nova_service_project }}"
+    role_name: "admin"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create compute service 
+  keystone:
+    command: "ensure_service"
+    service_name: "{{ nova_service_name }}"
+    service_type: "{{ nova_service_type }}"
+    description: "{{ nova_service_description }}"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create compute service's endpoints
+  keystone:
+    command: "ensure_endpoint"
+    region_name: "{{ nova_service_region }}"
+    service_name: "{{ nova_service_name }}"
+    service_type: "{{ nova_service_type }}"
+    endpoint_list: 
+      - url: "{{ nova_service_adminurl }}"
+        interface: "public"
+      - url: "{{ nova_service_adminurl }}"
+        interface: "admin"
+      - url: "{{ nova_service_adminurl }}"
+        interface: "internal"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"

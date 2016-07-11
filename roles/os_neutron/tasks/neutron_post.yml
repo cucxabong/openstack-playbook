@@ -1,0 +1,13 @@
+---
+- include: neutron_configure.yml
+
+- include: neutron_service_setup.yml
+  when: inventory_hostname == groups['neutron_server'][0]
+
+- include: neutron_db_setup.yml
+  when: inventory_hostname == groups['neutron_server'][0]
+
+- include: neutron_ssl.yml
+  when: neutron_service_proto == "https"
+
+- meta: flush_handlers

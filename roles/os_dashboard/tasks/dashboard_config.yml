@@ -1,0 +1,7 @@
+---
+- name: place Horizon local_setting.py
+  template:
+    src: "local_settings.py.j2"
+    dest: "/etc/openstack-dashboard//local_settings.py"
+    backup: yes
+  notify: Restart Apache

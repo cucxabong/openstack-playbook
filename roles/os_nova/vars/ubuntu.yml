@@ -1,0 +1,10 @@
+---
+nova_server_apt_packages:
+  - nova-api
+  - nova-conductor
+  - nova-consoleauth
+  - nova-novncproxy
+  - nova-scheduler
+
+nova_compute_apt_packages:
+  - nova-compute

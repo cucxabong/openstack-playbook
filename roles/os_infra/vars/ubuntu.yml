@@ -1,0 +1,15 @@
+---
+infra_ntp_apt_packages:
+  - chrony
+
+infra_memcached_apt_packages:
+  - memcached
+  - python-memcache
+
+infra_extra_repositories:
+  - string: "deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/mitaka main"
+    key_id: 5EDB1B62EC4926EA
+    key_server: keyserver.ubuntu.com
+    
+infra_extra_packages:
+  - python-mysqldb

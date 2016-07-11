@@ -1,0 +1,24 @@
+---
+- name: update apt cache if needed
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_timeout }}"
+
+- name: Preseed mariadb password(s)
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items: "{{ mariadb_debconf_items }}"
+  no_log: True
+
+- name: install mariadb server package
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ maridb_pakages }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2

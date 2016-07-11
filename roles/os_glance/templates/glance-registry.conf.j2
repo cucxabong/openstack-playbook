@@ -1,0 +1,29 @@
+[DEFAULT]
+bind_host = {{ glance_registry_host }}
+bind_port = {{ glance_registry_port }}
+http_keepalive = True
+{% if glance_ssl_insecure == "https" %}
+cert_file = "{{ glance_ssl_cert }}"
+key_file = "{{ glance_ssl_key }}"
+{% endif %}
+
+[database]
+connection = mysql+pymysql://{{ glance_database_user }}:{{ glance_database_password }}@{{ mysql_server_address }}/{{ glance_database_name }}
+backend = sqlalchemy
+
+[keystone_authtoken]
+insecure = {{ keystone_ssl_insecure | bool }}
+auth_uri = {{ keystone_service_internaluri }}
+auth_url = {{ keystone_service_adminuri }}
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = "{{ glance_service_project_domain }}"
+user_domain_name = "{{ glance_service_user_domain }}"
+project_name = {{ glance_service_project }}
+username = {{ glance_service_user }}
+password = {{ glance_identity_password }}
+token_cache_time = 300
+revocation_cache_time = 60
+
+[paste_deploy]
+flavor = keystone

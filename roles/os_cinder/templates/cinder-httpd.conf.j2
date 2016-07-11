@@ -1,0 +1,23 @@
+<VirtualHost *:{{ cinder_service_port }}>
+    WSGIDaemonProcess cinder-api processes=5 threads=1 user={{ cinder_system_user }} group={{ cinder_system_group }} display-name=%{GROUP}
+    WSGIProcessGroup cinder-api
+    WSGIScriptAlias / /usr/bin/cinder-wsgi
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    ErrorLogFormat "%{cu}t %M"
+    ErrorLog /var/log/apache2/cinder.log
+    CustomLog /var/log/apache2/cinder_access.log combined
+    {% if cinder_service_ssl_enabled %}
+    SSLEngine on
+    SSLCertificateFile {{ cinder_ssl_cert }}
+    SSLCertificateKeyFile {{ cinder_ssl_key }}
+    SSLCompression Off
+    SSLProtocol {{ cinder_ssl_protocol }}
+    SSLHonorCipherOrder On
+    SSLCipherSuite {{ cinder_ssl_cipher_suite }}
+    SSLOptions +StdEnvVars +ExportCertData
+    {% endif %}
+    <Directory /usr/bin>
+        Require all granted
+    </Directory>
+</VirtualHost>

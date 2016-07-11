@@ -1,0 +1,5 @@
+---
+keystone_apt_packages:
+  - keystone
+  - apache2
+  - libapache2-mod-wsgi

@@ -1,0 +1,29 @@
+---
+- name: Disable auto start cinder-api
+  copy:
+    src: "cinder-api.override"
+    dest: "/etc/init/cinder-api.override"
+    owner: root
+    group: root
+
+- name: install cinder controller packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  with_items: "{{ cinder_controller_apt_packages }}"
+  when: inventory_hostname in groups['cinder_api']
+
+- name: install cinder volume packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  with_items: "{{ cinder_volume_apt_packages }}"
+  when: inventory_hostname in groups['cinder_volume']

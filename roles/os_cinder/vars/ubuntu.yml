@@ -1,0 +1,8 @@
+---
+
+cinder_controller_apt_packages:
+  - cinder-api
+  - cinder-scheduler
+
+cinder_volume_apt_packages:
+  - cinder-volume

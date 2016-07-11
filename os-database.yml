@@ -1,0 +1,6 @@
+---
+- name: install Database Service
+  hosts: db_all
+  gather_facts: True
+  roles:
+      - os_database

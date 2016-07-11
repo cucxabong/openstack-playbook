@@ -1,0 +1,30 @@
+---
+# SSL Options
+glance_ssl_self_signed_regen: False
+glance_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ ansible_host }}"
+glance_ssl_dir: "/etc/glance/ssl"
+glance_ssl_cert: "{{ glance_ssl_dir }}/glance.pem"
+glance_ssl_key: "{{ glance_ssl_dir }}/glance.key"
+
+glance_database_name: glance
+glance_database_user: glance
+
+# Service Options
+glance_service_name: glance
+glance_service_type: image
+glance_service_description: "OpenStack Image"
+
+
+# System user/group
+glance_default_system_username: glance
+glance_default_system_group: glance
+
+glance_images:
+  - name: "cirros"
+    url: "http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img"
+    tmp: "/tmp"
+    disk_format: "qcow2"
+    container_format: "bare"
+    is_public: True
+    properties: 
+      - os_distro: "cirros"

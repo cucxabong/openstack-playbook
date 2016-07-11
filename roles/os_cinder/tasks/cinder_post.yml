@@ -1,0 +1,14 @@
+---
+
+- include: cinder_service_setup.yml
+  when: inventory_hostname == groups['cinder_api'][0]
+
+- include: cinder_configuration.yml
+- include: cinder_apache.yml
+  when: inventory_hostname in groups['cinder_api']
+
+- include: cinder_db_setup.yml
+  when: inventory_hostname == groups['cinder_api'][0]
+
+- include: cinder_ssl.yml
+  when: inventory_hostname in groups['cinder_api']

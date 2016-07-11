@@ -1,0 +1,39 @@
+---
+- name: add extra repository key
+  apt_key:
+    id: "{{ item.key_id }}"
+    keyserver: "{{ item.key_server }}"
+  with_items: "{{ infra_extra_repositories }}"
+
+- name: add extra repository
+  apt_repository:
+    repo: "{{ item.string }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ infra_extra_repositories }}"
+
+- name: upgrade system
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_timeout }}"
+    autoremove: yes
+  register: system_upgrade
+
+- name: reboot system after kernel upgrade 
+  command: reboot
+  async: 0
+  poll: 0
+  when: '"linux-image" in system_upgrade.stdout'
+  register: reboot_server
+
+- name: wait for server to boot up
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: "{{ ansible_port }}"
+    search_regex: "OpenSSH"
+    timeout: 600
+    state: started
+    delay: 10
+  when: reboot_server is defined
+  connection: local

@@ -1,0 +1,20 @@
+---
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+
+- include: keystone_install.yml
+- include: keystone_apache.yml
+- include: keystone_post.yml
+- include: keystone_db_setup.yml
+  when: inventory_hostname == groups['keystone_all'][0]
+
+- include: keystone_fernet.yml
+  when: inventory_hostname == groups['keystone_all'][0]
+
+- meta: flush_handlers
+
+- include: keystone_service_setup.yml
+  when: inventory_hostname == groups['keystone_all'][0]

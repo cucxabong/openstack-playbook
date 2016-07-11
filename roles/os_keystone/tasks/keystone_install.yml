@@ -1,0 +1,3 @@
+---
+- include: keystone_install_apt.yml
+  when: ansible_pkg_mgr == "apt"

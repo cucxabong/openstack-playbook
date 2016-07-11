@@ -1,0 +1,287 @@
+---
+apt_cache_timeout: 3600
+infras_network_interface_include_dir: "/etc/network/interfaces.d"
+
+######################### Begin SQL Database Server #########################
+
+mysql_root_user: "root"
+mysql_server_address: "{{ hostvars[groups['db_all'][0]].ansible_host }}"
+mysql_server_bind_port: 3306
+
+######################### End SQL Database Server #########################
+
+
+######################### Begin Message Queue #########################
+
+rabbitmq_auth_user: openstack
+rabbitmq_server: "{{ hostvars[groups['rabbitmq'][0]].ansible_host }}"
+
+######################### End Message Queue #########################
+
+# Networking Options
+nova_use_neutron_networking: True
+
+
+######################### Begin Time Synchronization Service (NTP) #########################
+
+infras_default_ntp_update_servers:
+  - 0.debian.pool.ntp.org
+  - 1.debian.pool.ntp.org
+
+######################### End Time Synchronization Service #################################
+
+
+######################### Begin Cluster Parameter #########################
+
+os_default_service_region: "RegionOne"
+os_default_domain_name: "default"
+os_default_project_domain: "{{ os_default_domain_name }}"
+os_default_user_domain: "{{ os_default_domain_name }}"
+
+# Default Project
+os_default_project:
+  - name: "admin"
+    description: "Admin Project"
+    domain: "{{ os_default_project_domain }}" 
+  - name: "service"
+    description: "Service Project"
+    domain: "{{ os_default_project_domain }}"
+
+# Admin User Info
+os_admin_user: "admin"
+os_admin_user_domain: "{{ os_default_user_domain }}"
+os_admin_project: "admin"
+os_admin_project_domain: "{{ os_default_project_domain }}"
+os_admin_credential_path: "/root/admin-openrc"
+
+# Service Project Info
+os_service_project_name: "service"
+os_service_project_domain: "{{ os_default_project_domain }}"
+
+######################### End Cluster Parameter #########################
+
+
+######################### Begin Memcached #########################
+
+memcached_port: 11211
+memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansible_host'] }}:{{ memcached_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+######################### End Memcached #########################
+
+######################### Begin Identity Service #########################
+
+# Service protocol (http/https)
+keystone_service_proto: https
+keystone_service_adminuri_proto: "{{ keystone_service_proto }}"
+keystone_service_internaluri_proto: "{{ keystone_service_proto }}"
+keystone_service_publicuri_proto: "{{ keystone_service_proto }}"
+
+# Service Listen Port
+keystone_admin_port: 35357
+keystone_service_port: 5000
+
+# Service Binding Address
+keystone_admin_bind_address: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+keystone_public_bind_address: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+
+# Service Region
+keystone_service_region: "{{ os_default_service_region }}"
+
+# Service Domain
+keystone_domain_name: "{{ os_default_user_domain }}"
+
+# Set to `True` to used un-trusted SSL certificate
+keystone_ssl_insecure: True
+
+# User-provide SSL Certificate
+#keystone_ssl_user_cert: <path to certificate on ansible deployment host>
+#keystone_ssl_user_key: <path to private key on ansible deployment host>
+
+# Service Endpoint
+keystone_service_adminuri: "{{ keystone_service_adminuri_proto }}://{{ keystone_admin_bind_address }}:{{ keystone_admin_port }}"
+keystone_service_adminurl: "{{ keystone_service_adminuri }}/v3"
+keystone_service_internaluri: "{{ keystone_service_internaluri_proto }}://{{ keystone_public_bind_address }}:{{ keystone_service_port }}"
+keystone_service_internalurl: "{{ keystone_service_internaluri }}/v3"
+keystone_service_publicuri: "{{ keystone_service_publicuri_proto }}://{{ keystone_public_bind_address }}:{{ keystone_service_port }}"
+keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
+
+######################### End Identity Service #########################
+
+
+######################### Begin Image Service #########################
+glance_service_proto: https
+glance_ssl_insecure: True
+
+glance_api_service_port: 9292
+glance_api_bind_host: "{{ hostvars[groups['glance'][0]].ansible_host }}"
+
+glance_registry_port: 9191
+glance_registry_host: "{{ hostvars[groups['glance'][0]].ansible_host }}"
+
+glance_service_url: "{{ glance_service_proto }}://{{ glance_api_bind_host }}:{{ glance_api_service_port }}"
+glance_service_region: "{{ os_default_service_region }}"
+glance_service_user: glance
+glance_service_user_domain: "{{ os_default_user_domain }}"
+glance_service_project: "{{ os_service_project_name }}"
+glance_service_project_domain: "{{ os_default_project_domain }}"
+glance_default_store: file
+glance_additional_stores:
+  - http
+  - cinder
+glance_fs_store_datadir: "/var/lib/{{ glance_default_system_username }}/images"
+
+# User-provide SSL certificate
+#glance_ssl_user_cert: <path to certificate on ansible deployment host>
+#glance_ssl_user_key: <path to private key on ansible deployment host>
+
+
+######################### End Image Service #########################
+
+######################### Begin Compute Service #########################
+nova_api_uri_proto: https
+nova_metadata_uri_proto: https
+nova_ssl_insecure: True
+
+nova_api_bind_port: 8774
+nova_api_bind_host: "{{ hostvars[groups['nova_api'][0]].ansible_host }}"
+nova_metadata_bind_host: "{{ hostvars[groups['nova_api'][0]].ansible_host }}"
+
+nova_metadata_bind_port: 8775
+nova_service_adminuri: "{{ nova_api_uri_proto }}://{{ nova_api_bind_host }}:{{ nova_api_bind_port }}"
+nova_service_adminurl: "{{ nova_service_adminuri }}/v2.1/%(tenant_id)s"
+
+nova_service_region: "{{ os_default_service_region }}"
+nova_service_user: nova
+nova_service_user_domain: "{{ os_default_user_domain }}"
+nova_service_project: "{{ os_service_project_name }}"
+nova_service_project_domain: "{{ os_default_project_domain }}"
+
+# SSL
+# User-provide SSL certificate
+#nova_ssl_user_cert: <path to certificate on ansible deployment host>
+#nova_ssl_user_key: <path to private key on ansible deployment host>
+
+
+######################### End Compute Service #########################
+
+######################### Begin Networking Service #########################
+
+neutron_service_proto: https
+neutron_ssl_insecure: True
+
+neutron_service_port: 9696
+neutron_service_adminuri: "{{ neutron_service_proto }}://{{ hostvars[groups['neutron_server'][0]].ansible_host }}:{{ neutron_service_port }}"
+neutron_service_adminurl: "{{ neutron_service_adminuri }}"
+neutron_service_region: "{{ os_default_service_region }}"
+neutron_service_user: neutron
+neutron_service_user_domain: "{{ os_default_user_domain }}"
+neutron_service_project: "{{ os_service_project_name }}"
+neutron_service_project_domain: "{{ os_default_project_domain }}"
+
+# User-provide SSL certificate
+#neutron_ssl_user_cert: <path to certificate on ansible deployment host>
+#neutron_ssl_user_key: <path to private key on ansible deployment host>
+
+## Network Architecture
+# Supported value is in ['provider', 'self-service']
+neutron_network_options: provider
+
+## Neutron Provider Network Options
+neutron_provider_mechanism_drivers: linuxbridge
+
+neutron_tenant_networks:
+
+neutron_provider_networks:
+  #network_types: flat,vlan
+  network_types: flat
+  neutron_flat_networks: "flat-provider"
+  #neutron_vlan_ranges: "vlan-provider:1100:1110"
+  #network_mappings: "flat-provider:eth1, vlan-provider:eth2"
+  network_mappings: "flat-provider:eth1"
+
+neutron_dnsmasq_config_file: "/etc/neutron/dnsmasq-neutron.conf"
+
+# Tunning MTU size of instance
+neutron_dhcp_instance_mtu: 1400
+
+## Neutron self-service Options
+
+
+######################### End Networking Service #########################
+
+# SSL
+cinder_service_ssl_enabled: True
+cinder_ssl_insecure: True
+
+# User-provide SSL certificate
+#cinder_ssl_user_cert: <path to certificate on ansible deployment host>
+#cinder_ssl_user_key: <path to private key on ansible deployment host>
+
+## Block Storage Service
+cinder_service_port: 8776
+cinder_service_bind_host: "{{ hostvars[groups['cinder_api'][0]].ansible_host }}"
+cinder_service_project: "{{ os_service_project_name }}"
+cinder_service_project_domain: "{{ os_default_project_domain }}"
+cinder_service_name: cinder
+cinder_service_region: "{{ os_default_service_region }}"
+cinder_service_user: cinder
+cinder_service_user_domain: "{{ os_default_user_domain }}"
+cinder_service_type: volume
+cinder_service_description: "Cinder Volume Service"
+cinder_service_publicuri: "{{ cinder_service_uri_proto }}://{{ cinder_service_bind_host }}:{{ cinder_service_port }}"
+cinder_service_publicurl: "{{ cinder_service_publicuri }}/v1/%(tenant_id)s"
+cinder_service_adminuri: "{{ cinder_service_publicuri }}"
+cinder_service_adminurl: "{{ cinder_service_publicurl }}"
+cinder_service_internaluri: "{{ cinder_service_publicuri }}"
+cinder_service_internalurl: "{{ cinder_service_publicurl }}"
+
+cinder_service_v2_name: cinderv2
+cinder_service_v2_type: volumev2
+cinder_service_v2_description: "Cinder Volume Service V2"
+cinder_service_v2_publicuri: "{{ cinder_service_uri_proto }}://{{ cinder_service_bind_host }}:{{ cinder_service_port }}"
+cinder_service_v2_publicurl: "{{ cinder_service_v2_publicuri }}/v2/%(tenant_id)s"
+cinder_service_v2_adminuri: "{{ cinder_service_v2_publicuri }}"
+cinder_service_v2_adminurl: "{{ cinder_service_v2_publicurl }}"
+cinder_service_v2_internaluri: "{{ cinder_service_v2_publicuri }}"
+cinder_service_v2_internalurl: "{{ cinder_service_v2_publicurl }}"
+
+cinder_enabled_backend: lvm
+cinder_backends:
+  lvm:
+    volume_group: cinder-volumes
+    volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
+    physical_devices:
+      - /dev/sdb
+      - /dev/sdc
+
+# Speed up volume deletion process
+#
+# More info: https://udaraliyanage.wordpress.com/2014/05/24/openstack-make-volume-deletion-super-fast/
+
+# Valid value: none, zero, shred
+cinder_volume_clear_method: zero
+
+# The size of amount to clear in MiB (0 => all)
+cinder_volume_clear_size: 50
+
+
+########################### Begin Horizon Dashboard ###########################
+
+horizon_keystone_host: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+horizon_keystone_endpoint: "{{ keystone_service_internalurl }}"
+horizon_keystone_default_domain: "{{ os_default_domain_name }}"
+horizon_keystone_multidomain_support: True
+horizon_ssl_no_verify: "{{ keystone_ssl_insecure | bool }}"
+horizon_time_zone: "Asia/Bangkok"
+horizon_enable_ipv6: False
+horizon_enable_neutron_lb: False
+horizon_enable_ha_router: False
+horizon_enable_neutron_fwaas: False
+horizon_enable_neutron_vpnaas: False
+horizon_enable_neutron_router: False
+horizon_enable_neutron_quotas: False
+horizon_enable_fip_topology_check: False
+
+horizon_default_role_name: "user"
+
+############################ End Horizon Dashboard ############################

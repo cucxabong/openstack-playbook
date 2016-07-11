@@ -1,0 +1,54 @@
+[DEFAULT]
+rpc_backend = rabbit
+auth_strategy = keystone
+{% if inventory_hostname in groups['neutron_server'] %}
+core_plugin = ml2
+service_plugins =
+notify_nova_on_port_status_changes = True
+notify_nova_on_port_data_changes = True
+{% if neutron_service_proto == "https" %}
+use_ssl = True
+{% endif %}
+[database]
+connection = mysql+pymysql://{{ neutron_database_user }}:{{ neutron_database_password }}@{{ mysql_server_address }}/{{ neutron_database_name }}
+
+{% if neutron_service_proto == "https" %}
+[ssl]
+cert_file = "{{ neutron_ssl_cert }}"
+key_file = "{{ neutron_ssl_key }}"
+#version = "TLSv1_1"
+#ciphers
+{% endif %}
+
+[nova]
+auth_url = {{ keystone_service_adminuri }}
+auth_type = password
+project_domain_name = {{ nova_service_project_domain }}
+user_domain_name = {{ nova_service_user_domain }}
+region_name = {{ nova_service_region }}
+project_name = {{ nova_service_project }}
+username = {{ nova_service_user }}
+password = {{ nova_service_password }}
+insecure = {{ nova_ssl_insecure }}
+{% endif %}
+
+[agent]
+root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
+
+[oslo_messaging_rabbit]
+rabbit_host = {{ rabbitmq_server }}
+rabbit_userid = {{ rabbitmq_auth_user }}
+rabbit_password = {{ rabbitmq_auth_password }}
+
+[keystone_authtoken]
+insecure = {{ keystone_ssl_insecure | bool }}
+auth_uri = "{{ keystone_service_internaluri }}"
+auth_url = "{{ keystone_service_adminuri }}"
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = {{ neutron_service_project_domain }}
+user_domain_name = {{ neutron_service_user_domain }}
+project_name = {{ neutron_service_project }}
+username = {{ neutron_service_user }}
+password = {{ neutron_service_password }}
+region_name = {{ keystone_service_region }}

@@ -1,0 +1,37 @@
+---
+
+# SSL Options
+keystone_ssl_self_signed_regen: False
+#keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+keystone_ssl_cert: "/etc/ssl/certs/keystone.pem"
+keystone_ssl_key: "/etc/ssl/private/keystone.key"
+keystone_ssl_protocol: "ALL -SSLv2 -SSLv3"
+keystone_ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+
+keystone_default_roles:
+  - admin
+  - user
+
+keystone_database_name: keystone
+keystone_database_user: keystone
+
+## System Info
+keystone_system_user_name: keystone
+keystone_system_user_group: keystone
+keystone_system_service_name: apache2
+
+keystone_rpc_backend: rabbit
+keystone_token_provider: fernet
+
+## Service Options
+keystone_service_region: "{{ os_default_service_region }}"
+keystone_service_name: "keystone"
+keystone_service_type: "identity"
+keystone_service_description: "OpenStack Identity Service"
+
+# Fernet Options
+keystone_fernet_tokens_key_repository: "/etc/keystone/fernet-keys"
+keystone_fernet_tokens_max_active_keys: 5
+keystone_fernet_rotation: daily
+keystone_fernet_auto_rotation_script: /opt/keystone-fernet-rotate.sh

@@ -1,0 +1,10 @@
+---
+- name: Execute nova-api DB sync
+  command: "nova-manage api_db sync"
+  become: yes
+  become_user: "nova"
+
+- name: Execute nova DB sync
+  command: "nova-manage db sync"
+  become: yes
+  become_user: "nova"

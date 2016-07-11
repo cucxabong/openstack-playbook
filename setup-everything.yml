@@ -1,0 +1,9 @@
+---
+- include: setup-infra.yml
+- include: os-database.yml
+- include: os-keystone-setup.yml
+- include: os-glance-setup.yml
+- include: os-nova-setup.yml
+- include: os-neutron-setup.yaml
+- include: os-cinder-setup.yml
+- include: os-dashboard-setup.yml

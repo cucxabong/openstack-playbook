@@ -1,0 +1,30 @@
+---
+- name: ensure mariadb server come up
+  wait_for:
+    host: "{{ mysql_server_address }}"
+    port: "{{ mysql_server_bind_port }}"
+    search_regex: "MariaDB"
+    delay: 0
+    timeout: 60
+
+- name: Remove anonymous user
+  mysql_user:
+    login_user: root
+    login_host: localhost
+    login_password: "{{ mariadb_root_password }}"
+    name: ""
+    host: "{{ item }}"
+    state: absent
+  with_items:
+    - "127.0.0.1"
+    - "localhost"
+    - "{{ ansible_hostname }}"
+    - "{{ ansible_fqdn }}"
+
+- name: Remove the test database
+  mysql_db:
+    name: "test"
+    state: absent
+    login_user: root
+    login_host: localhost
+    login_password: "{{ mariadb_root_password }}"

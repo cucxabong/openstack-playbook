@@ -1,0 +1,5 @@
+---
+- name: Execute cinder DB sync
+  command: "cinder-manage db sync"
+  become: yes
+  become_user: "{{ cinder_system_user }}"

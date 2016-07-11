@@ -1,0 +1,55 @@
+---
+- name: Place 'neutron.conf' config file
+  template:
+    src: "neutron.conf.j2"
+    dest: "/etc/neutron/neutron.conf"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron controller services
+    - Restart neutron compute services
+
+- name: Place 'ml2_conf.ini' config file
+  template:
+    src: "ml2_conf.ini.j2"
+    dest: "/etc/neutron/plugins/ml2/ml2_conf.ini"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron-server service 
+
+- name: Place 'linuxbridge_agent.ini' config file
+  template:
+    src: "linuxbridge_agent.ini.j2"
+    dest: "/etc/neutron/plugins/ml2/linuxbridge_agent.ini"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron-linuxbridge-agent service 
+
+- name: Place 'dhcp_agent.ini'
+  template:
+    src: "dhcp_agent.ini.j2"
+    dest: "/etc/neutron/dhcp_agent.ini"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron-dhcp-agent service 
+
+- name: place dhcp options config
+  template:
+    src: "dnsmasq-neutron.conf.j2"
+    dest: "{{ neutron_dnsmasq_config_file }}"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron-dhcp-agent service 
+
+- name: Place 'metadata_agent.ini'
+  template:
+    src: "metadata_agent.ini.j2"
+    dest: "/etc/neutron/metadata_agent.ini"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify:
+    - Restart neutron-metadata-agent service 

@@ -1,0 +1,21 @@
+---
+# SSL Options
+cinder_ssl_dir: "/etc/cinder/ssl"
+cinder_ssl_cert: "{{ cinder_ssl_dir }}/cinder.crt"
+cinder_ssl_key: "{{ cinder_ssl_dir }}/cinder.key"
+cinder_ssl_protocol: "ALL -SSLv2 -SSLv3"
+cinder_ssl_cipher_suite: "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS"
+cinder_ssl_self_signed_regen: False
+cinder_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['cinder_api'][0]].ansible_host }}"
+cinder_service_uri_proto: '{% if cinder_service_ssl_enabled %}https{% else %}http{% endif %}'
+
+cinder_iscsi_helper: tgtadm
+cinder_volume_name_template: volume-%s
+
+# Database
+cinder_database_name: cinder
+cinder_database_user: cinder
+
+# System 
+cinder_system_user: cinder
+cinder_system_group: cinder

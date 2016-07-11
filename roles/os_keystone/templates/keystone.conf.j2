@@ -1,0 +1,12 @@
+[DEFAULT]
+admin_token = {{ keystone_auth_admin_token }}
+
+[database]
+connection = mysql+pymysql://{{ keystone_database_user }}:{{ keystone_mysql_password }}@{{ mysql_server_address }}/{{ keystone_database_name }}
+
+[token]
+provider = {{ keystone_token_provider }}
+
+[fernet_tokens]
+key_repository = {{ keystone_fernet_tokens_key_repository }}
+max_active_keys = {{ keystone_fernet_tokens_max_active_keys }}

@@ -1,0 +1,7 @@
+---
+- name: Execute neutron DB sync
+  command: "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head"
+  become: yes
+  become_user: "{{ neutron_default_system_username }}"
+  notify:
+    - Restart neutron controller services

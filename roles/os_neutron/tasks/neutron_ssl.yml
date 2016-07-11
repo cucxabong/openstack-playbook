@@ -1,0 +1,3 @@
+---
+- include: neutron_ssl_self_signed.yml
+  when: neutron_ssl_user_cert is not defined or neutron_ssl_user_key is not defined

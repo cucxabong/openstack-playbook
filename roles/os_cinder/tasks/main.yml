@@ -1,0 +1,13 @@
+---
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+
+- include: cinder_pre.yml
+- include: cinder_install.yml
+- include: cinder_post.yml
+
+- include: cinder_lvm_prepare.yml
+  when: inventory_hostname in groups['cinder_volume'] and cinder_enabled_backend == "lvm"

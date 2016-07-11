@@ -1,0 +1,15 @@
+---
+# TODO: Everything need to prepare for cinder services
+- name: Install lvm related packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  with_items:
+    - lvm2
+  when: cinder_enabled_backend == "lvm" and inventory_hostname in groups['cinder_volume']
+
+# TODO Prepare lvm vgroup/lvol...

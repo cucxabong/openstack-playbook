@@ -1,0 +1,20 @@
+---
+- name: place `glance-api.conf`
+  template:
+    src: "glance-api.conf.j2"
+    dest: "/etc/glance/glance-api.conf"
+    owner: "{{ glance_default_system_username }}"
+    group: "{{ glance_default_system_group }}"
+    mode: 0644
+  notify:
+    - Restart glance-api
+
+- name: place `glance-registry.conf`
+  template:
+    src: "glance-registry.conf.j2"
+    dest: "/etc/glance/glance-registry.conf"
+    owner: "{{ glance_default_system_username }}"
+    group: "{{ glance_default_system_group }}"
+    mode: 0644
+  notify:
+    - Restart glance-registry

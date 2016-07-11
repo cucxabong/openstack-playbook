@@ -1,0 +1,19 @@
+---
+maridb_pakages:
+  - python-mysqldb
+  - mariadb-server
+  
+mariadb_server_package_name: mariadb-server
+mariadb_service_name: mysql
+mariadb_server_config_file: /etc/mysql/my.cnf
+
+
+mariadb_debconf_items:
+  - question: "mysql-server/root_password"
+    name: "{{ mariadb_server_package_name }}"
+    value: "{{ mariadb_root_password }}"
+    vtype: string
+  - question: "mysql-server/root_password_again"
+    name: "{{ mariadb_server_package_name }}"
+    value: "{{ mariadb_root_password }}"
+    vtype: string

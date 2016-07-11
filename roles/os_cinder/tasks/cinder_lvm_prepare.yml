@@ -1,0 +1,20 @@
+---
+- name: create lvm volume group for cinder
+  lvg:
+    state: present
+    vg: "{{ cinder_backends['lvm']['volume_group'] }}"
+    pvs: "{% for pv in cinder_backends['lvm']['physical_devices'] %}{{ pv }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+- name: scan lvm enabled devices 
+  shell: |
+    /sbin/pvdisplay | awk '/PV\ Name/ {print $3}' | sed 's/\/dev\///g'
+  register: lvm_devices
+
+- name: Drop LVM config file
+  template:
+    src: "lvm.conf.j2"
+    dest: "/etc/lvm/lvm.conf"
+    owner: "root"
+    group: "root"
+    backup: yes
+  when: lvm_devices.rc == 0

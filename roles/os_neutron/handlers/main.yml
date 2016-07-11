@@ -1,0 +1,67 @@
+---
+- name: Restart neutron controller services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  with_items:
+    - neutron-server
+    - neutron-linuxbridge-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Restart neutron compute services
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  with_items:
+    - neutron-linuxbridge-agent
+  when: inventory_hostname in groups['neutron_compute']
+
+- name: Restart neutron-server service 
+  service:
+    name: "neutron-server"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Restart neutron-linuxbridge-agent service 
+  service:
+    name: "neutron-linuxbridge-agent"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Restart neutron-dhcp-agent service 
+  service:
+    name: "neutron-dhcp-agent"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  when: inventory_hostname in groups['neutron_server']
+
+- name: Restart neutron-metadata-agent service 
+  service:
+    name: "neutron-metadata-agent"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  when: inventory_hostname in groups['neutron_server']

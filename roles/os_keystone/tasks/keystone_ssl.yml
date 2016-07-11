@@ -1,0 +1,7 @@
+---
+
+- include: keystone_ssl_user_provide.yml
+  when: keystone_ssl_user_cert is defined and keystone_ssl_user_key is defined
+
+- include: keystone_ssl_self_signed.yml
+  when: keystone_ssl_user_cert is not defined or keystone_ssl_user_key is not defined

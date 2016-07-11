@@ -1,0 +1,3 @@
+---
+- include: neutron_ssl_generate.yml
+  when: inventory_hostname == groups['neutron_server'][0]

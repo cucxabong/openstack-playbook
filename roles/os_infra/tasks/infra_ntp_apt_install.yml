@@ -1,0 +1,11 @@
+---
+- name: Install ntp service
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 1
+  with_items:
+    - "{{ infra_ntp_apt_packages }}"

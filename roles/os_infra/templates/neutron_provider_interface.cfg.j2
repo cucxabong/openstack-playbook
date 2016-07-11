@@ -1,0 +1,4 @@
+auto {{ neutron_provider_interface }}
+iface {{ neutron_provider_interface }} inet manual
+up ip link set dev $IFACE up
+down ip link set dev $IFACE down

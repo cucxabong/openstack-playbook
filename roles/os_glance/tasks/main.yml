@@ -1,0 +1,11 @@
+---
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+
+- include: glance_install.yml
+- include: glance_post.yml
+#- include: glance_upload_image.yml
+- meta: flush_handlers

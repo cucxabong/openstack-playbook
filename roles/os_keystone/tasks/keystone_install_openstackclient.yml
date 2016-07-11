@@ -1,0 +1,20 @@
+---
+- name: install pip related packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python-pip
+  when: keystone_service_proto == "https"
+
+- name: install python-openstackclient from pip
+  pip:
+    name: python-openstackclient
+    state: latest
+  when: keystone_service_proto == "https"
+
+- name: install python-openstackclient from repository
+  apt:
+    name: python-openstackclient
+    state: latest
+  when: keystone_service_proto == "http"

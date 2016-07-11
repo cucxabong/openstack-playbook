@@ -1,0 +1,99 @@
+---
+- name: Create Identity user for Volume Service
+  keystone:
+    command: "ensure_user"
+    user_name: "{{ cinder_service_user }}"
+    password: "{{ cinder_service_password }}"
+    domain_name: "{{ cinder_service_user_domain }}"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+  no_log: True
+
+- name: create user-role mapping
+  keystone:
+    command: "ensure_user_role"
+    user_name: "{{ cinder_service_user }}"
+    project_name: "{{ cinder_service_project }}"
+    role_name: "admin"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create image v1 service 
+  keystone:
+    command: "ensure_service"
+    service_name: "{{ cinder_service_name }}"
+    service_type: "{{ cinder_service_type }}"
+    description: "{{ cinder_service_description }}"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create image service v1 endpoints
+  keystone:
+    command: "ensure_endpoint"
+    region_name: "{{ cinder_service_region }}"
+    service_name: "{{ cinder_service_name }}"
+    service_type: "{{ cinder_service_type }}"
+    endpoint_list: 
+      - url: "{{ cinder_service_publicurl }}"
+        interface: "public"
+      - url: "{{ cinder_service_adminurl }}"
+        interface: "admin"
+      - url: "{{ cinder_service_internalurl }}"
+        interface: "internal"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create image v2 service 
+  keystone:
+    command: "ensure_service"
+    service_name: "{{ cinder_service_v2_name }}"
+    service_type: "{{ cinder_service_v2_type }}"
+    description: "{{ cinder_service_v2_description }}"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create image service v2 endpoints
+  keystone:
+    command: "ensure_endpoint"
+    region_name: "{{ cinder_service_region }}"
+    service_name: "{{ cinder_service_v2_name }}"
+    service_type: "{{ cinder_service_v2_type }}"
+    endpoint_list: 
+      - url: "{{ cinder_service_v2_publicurl }}"
+        interface: "public"
+      - url: "{{ cinder_service_v2_adminurl }}"
+        interface: "admin"
+      - url: "{{ cinder_service_v2_internalurl }}"
+        interface: "internal"
+    login_user: "{{ os_admin_user }}"
+    login_user_domain_name: "{{ os_admin_user_domain }}"
+    login_password: "{{ os_admin_password }}"
+    login_project_name: "{{ os_admin_project }}"
+    login_project_domain_name: "{{ os_admin_project_domain }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"

@@ -1,0 +1,12 @@
+---
+
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+
+- include: nova_install.yml
+- include: nova_post.yml
+- include: nova_ssl.yml
+  when: nova_api_uri_proto == "https" or nova_metadata_uri_proto == "https"

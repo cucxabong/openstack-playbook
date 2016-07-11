@@ -1,0 +1,33 @@
+---
+- name: Install neutron server apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  with_items: "{{ neutron_server_apt_packages }}"
+  when: inventory_hostname in groups['neutron_server']
+
+
+- name: Install neutron apt packages on compute nodes
+  apt:
+    name: "{{ item }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  with_items: "{{ neutron_compute_node_apt_packages }}"
+  when: inventory_hostname in groups['neutron_compute']
+
+- name: install l3-agent (self-service network) on network node
+  apt:
+    name: "{{ neutron_self_service_l3_agent_package }}"
+    state: latest
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+  when: neutron_network_options == 'self-service' and inventory_hostname in groups['neutron_compute']

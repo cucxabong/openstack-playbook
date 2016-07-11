@@ -1,0 +1,11 @@
+[linux_bridge]
+{% if neutron_provider_networks.network_mappings is defined %}
+physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
+{% endif %}
+
+[vxlan]
+enable_vxlan = False
+
+[securitygroup]
+enable_security_group = True
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver

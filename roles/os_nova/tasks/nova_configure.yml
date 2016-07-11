@@ -1,0 +1,20 @@
+---
+- name: Place nova.conf 
+  template:
+    src: "nova.conf.j2"
+    dest: "/etc/nova/nova.conf"
+    owner: "nova"
+    group: "nova"
+  notify:
+    - restart nova compute service
+    - restart nova controller services
+
+- name: place nova-compute.conf
+  template:
+    src: "nova-compute.conf.j2"
+    dest: "/etc/nova/nova-compute.conf"
+    owner: "nova"
+    group: "nova"
+  when: inventory_hostname in groups['nova_compute']
+  notify:
+    - restart nova compute service

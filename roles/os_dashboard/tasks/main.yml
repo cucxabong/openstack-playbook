@@ -1,0 +1,9 @@
+---
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    
+- include: dashboard_install.yml
+- include: dashboard_config.yml

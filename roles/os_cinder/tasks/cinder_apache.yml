@@ -1,0 +1,32 @@
+---
+- name: ensure cinder-api port enable
+  lineinfile:
+    dest: "/etc/apache2/ports.conf"
+    line: "Listen {{ cinder_service_bind_host }}:{{ cinder_service_port }}"
+    state: present
+
+- name: enable/disable apache2 ssl module
+  apache2_module:
+    name: ssl
+    state: "{{ cinder_service_ssl_enabled | ternary('present', 'absent')}}"
+  notify:
+    - Restart Apache
+
+- name: Place cinder-api apache config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+  with_items:
+    - { src: "cinder-httpd.conf.j2", dest: "/etc/apache2/sites-available/cinder-httpd.conf" }
+  notify:
+    - Restart Apache
+
+- name: Enabled keystone vhost
+  file:
+    src: "/etc/apache2/sites-available/cinder-httpd.conf"
+    dest: "/etc/apache2/sites-enabled/cinder-httpd.conf"
+    state: "link"
+  notify:
+    - Restart Apache

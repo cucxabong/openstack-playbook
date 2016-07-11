@@ -1,0 +1,87 @@
+---
+
+- name: ensure keystone admin service up and running
+  wait_for:
+    host: "{{ hostvars[groups['keystone_all'][0]].ansible_host}}"
+    port: "{{ keystone_admin_port }}"
+    state: started
+    timeout: 60
+    delay: 0
+
+- name: create keystone service 
+  keystone:
+    command: "ensure_service"
+    service_name: "{{ keystone_service_name }}"
+    service_type: "{{ keystone_service_type }}"
+    description: "{{ keystone_service_description }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create keystone endpoint
+  keystone:
+    command: "ensure_endpoint"
+    region_name: "{{ keystone_service_region }}"
+    service_name: "{{ keystone_service_name }}"
+    service_type: "{{ keystone_service_type }}"
+    endpoint_list:
+        - url: "{{ keystone_service_publicurl }}"
+          interface: "public"
+        - url: "{{ keystone_service_adminurl }}"
+          interface: "admin"
+        - url: "{{ keystone_service_internalurl }}"
+          interface: "internal"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: Create 'default' domain
+  keystone:
+    command: "ensure_domain"
+    domain_name: "{{ os_default_domain_name }}"
+    domain_enabled: True
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+
+- name: create necessary project
+  keystone:
+    command: "ensure_project"
+    project_name: "{{ item.name }}"
+    domain_name: "{{ item.domain }}"
+    description: "{{ item.description }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+  with_items:
+    - "{{ os_default_project }}"
+  
+- name: create admin user
+  keystone:
+    command: "ensure_user"
+    user_name: "{{ os_admin_user }}"
+    password: "{{ os_admin_password }}"
+    domain_name: "{{ os_admin_user_domain }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+  no_log: True
+
+- name: create default roles
+  keystone:
+    command: "ensure_role"
+    role_name: "{{ item }}"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"
+  with_items: "{{ keystone_default_roles }}"
+
+- name: mapping user-role for admin user
+  keystone:
+    command: "ensure_user_role"
+    user_name: "{{ os_admin_user }}"
+    project_name: "{{ os_admin_project }}"
+    role_name: "admin"
+    token: "{{ keystone_auth_admin_token }}"
+    endpoint: "{{ keystone_service_adminurl }}"
+    insecure: "{{ keystone_ssl_insecure }}"

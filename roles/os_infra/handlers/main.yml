@@ -1,0 +1,18 @@
+---
+- name: restart memcached service
+  service:
+    name: "memcached"
+    state: restarted
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 1
+
+- name: restart ntp server
+  service:
+    name: "chrony"
+    state: restarted
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 1

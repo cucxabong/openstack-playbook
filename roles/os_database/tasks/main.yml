@@ -1,0 +1,16 @@
+---
+# tasks file for mariadb
+
+- name: Fail if the mariadb root password is not provide
+  fail:
+    msg: |
+      Please set mariadb_root_password variable prior to apply the mariadb role.
+  when: (mariadb_root_password is undefined) or (mariadb_root_password is none)
+
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+
+- include: mariadb_install.yml
+- include: post_install.yml

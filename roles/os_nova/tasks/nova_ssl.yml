@@ -1,0 +1,3 @@
+---
+- include: nova_ssl_self_signed.yml
+  when: nova_ssl_user_cert is not defined or nova_ssl_user_key is not defined

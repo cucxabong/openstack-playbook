@@ -1,0 +1,52 @@
+# {{ ansible_managed }}
+
+<VirtualHost {{ keystone_public_bind_address }}:{{ keystone_service_port }}>
+    WSGIDaemonProcess keystone-public processes=5 threads=1 user={{ keystone_system_user_name }} group={{ keystone_system_user_group }} display-name=%{GROUP}
+    WSGIProcessGroup keystone-public
+    WSGIScriptAlias / /usr/bin/keystone-wsgi-public
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    ErrorLogFormat "%{cu}t %M"
+    ErrorLog /var/log/apache2/keystone.log
+    CustomLog /var/log/apache2/keystone_access.log combined
+
+    {% if keystone_service_proto == "https" -%}
+    SSLEngine on
+    SSLCertificateFile {{ keystone_ssl_cert }}
+    SSLCertificateKeyFile {{ keystone_ssl_key }}
+    SSLCompression Off
+    SSLProtocol {{ keystone_ssl_protocol }}
+    SSLHonorCipherOrder On
+    SSLCipherSuite {{ keystone_ssl_cipher_suite }}
+    SSLOptions +StdEnvVars +ExportCertData
+    {% endif %}
+
+    <Directory /usr/bin>
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+<VirtualHost {{ keystone_admin_bind_address }}:{{ keystone_admin_port }}>
+    WSGIDaemonProcess keystone-admin processes=5 threads=1 user={{ keystone_system_user_name }} group={{ keystone_system_user_group }} display-name=%{GROUP}
+    WSGIProcessGroup keystone-admin
+    WSGIScriptAlias / /usr/bin/keystone-wsgi-admin
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    ErrorLogFormat "%{cu}t %M"
+    ErrorLog /var/log/apache2/keystone.log
+    CustomLog /var/log/apache2/keystone_access.log combined
+    
+    {% if keystone_service_proto == "https" -%}
+    SSLEngine on
+    SSLCertificateFile {{ keystone_ssl_cert }}
+    SSLCertificateKeyFile {{ keystone_ssl_key }}
+    SSLCompression Off
+    SSLProtocol {{ keystone_ssl_protocol }}
+    SSLHonorCipherOrder On
+    SSLCipherSuite {{ keystone_ssl_cipher_suite }}
+    SSLOptions +StdEnvVars +ExportCertData
+    {% endif %}
+    <Directory /usr/bin>
+        Require all granted
+    </Directory>
+</VirtualHost>

@@ -1,0 +1,28 @@
+---
+- name: Disable auto start keystone
+  copy:
+    src: "keystone.override"
+    dest: "/etc/init/keystone.override"
+    owner: root
+    group: root
+
+- name: Update apt cache if needed
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_timeout }}"
+  register: apt_update
+  until: apt_update|success
+  retries: 5
+  delay: 2
+
+- name: Install apt packages
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
+  with_items: "{{ keystone_apt_packages }}"
+
+- include: keystone_install_openstackclient.yml

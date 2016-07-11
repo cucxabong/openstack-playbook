@@ -1,0 +1,18 @@
+---
+- name: Restart glance-api
+  service:
+    name: "glance-api"
+    state: "restarted"
+  register: glance_api_restart
+  until: glance_api_restart|success
+  retries: 5
+  delay: 2
+
+- name: Restart glance-registry
+  service:
+    name: "glance-registry"
+    state: "restarted"
+  register: glance_registry_restart
+  until: glance_registry_restart|success
+  retries: 5
+  delay: 2

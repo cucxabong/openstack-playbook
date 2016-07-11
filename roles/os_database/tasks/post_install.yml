@@ -1,0 +1,17 @@
+---
+- name: remove `bind-address` in my.cnf
+  lineinfile:
+    dest: "{{ mariadb_server_config_file }}"
+    regexp: "^bind-address.*"
+    state: absent
+  notify: restart mariadb
+
+- name: Place mariadb config file
+  template:
+    src: openstack.cnf.j2
+    dest: /etc/mysql/conf.d/openstack.cnf
+  notify: restart mariadb
+
+- meta: flush_handlers
+
+- include: mariadb_secure_installation.yml

@@ -1,0 +1,22 @@
+---
+# SSL Options
+neutron_ssl_self_signed_regen: False
+neutron_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['neutron_server'][0]].ansible_host }}"
+neutron_ssl_dir: "/etc/neutron/ssl"
+neutron_ssl_cert: "{{ neutron_ssl_dir }}/neutron.pem"
+neutron_ssl_key: "{{ neutron_ssl_dir }}/neutron.key"
+
+neutron_database_name: neutron
+neutron_database_user: neutron
+
+# Service Options
+neutron_service_name: neutron
+neutron_service_type: network
+neutron_service_description: "OpenStack Networking"
+
+
+# System user/group
+neutron_default_system_username: neutron
+neutron_default_system_group: neutron
+
+neutron_dhcp_domain: "cloud-local"

@@ -1,0 +1,11 @@
+---
+- name: Modify cinder.conf file
+  template:
+     src: "cinder.conf.j2"
+     dest: "/etc/cinder/cinder.conf"
+     owner: "{{ cinder_system_user }}"
+     group: "{{ cinder_system_group }}"
+  notify:
+    - restart cinder services on controller node(s)
+    - restart cinder services on storage node(s)
+    - Restart Apache

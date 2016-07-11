@@ -1,0 +1,5 @@
+---
+- name: prepare common environment
+  hosts: all
+  roles:
+      - os_infra

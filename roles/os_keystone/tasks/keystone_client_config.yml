@@ -1,0 +1,6 @@
+---
+- name: place credential file
+  template:
+    src: "admin-openrc.j2"
+    dest: "{{ os_admin_credential_path }}"
+    mode: 0600

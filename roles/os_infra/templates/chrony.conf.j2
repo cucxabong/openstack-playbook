@@ -1,0 +1,23 @@
+{% if inventory_hostname in groups['keystone_all'] %}
+{% for i in infras_default_ntp_update_servers %}
+server {{ i }} iburst
+{% endfor %}
+{% else%}
+{% for j in groups['keystone_all'] %}
+server {{ j }} iburst
+{% endfor %}
+{% endif %}
+keyfile /etc/chrony/chrony.keys
+commandkey 1
+driftfile /var/lib/chrony/chrony.drift
+log tracking measurements statistics
+logdir /var/log/chrony
+maxupdateskew 100.0
+dumponexit
+dumpdir /var/lib/chrony
+local stratum 10
+allow 10/8
+allow 192.168/16
+allow 172.16/12
+logchange 0.5
+rtconutc

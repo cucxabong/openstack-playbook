@@ -1,0 +1,20 @@
+---
+
+- include: infra_memcached_apt_install.yml
+  when: ansible_pkg_mgr == "apt"
+
+- name: remove old memcached binding address 
+  lineinfile:
+    regexp: ^-l\s(?!{{ inventory_hostname }})
+    state: absent
+    dest: "/etc/memcached.conf"
+  notify:
+    - restart memcached service
+
+- name: Edit memcached binding address 
+  lineinfile:
+    dest: "/etc/memcached.conf"
+    line: "-l {{ inventory_hostname }}"
+    state: present
+  notify:
+    - restart memcached service

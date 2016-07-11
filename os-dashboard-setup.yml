@@ -1,0 +1,5 @@
+---
+- name: Install and Configure Dashboard
+  hosts: dashboard
+  roles:
+    - os_dashboard

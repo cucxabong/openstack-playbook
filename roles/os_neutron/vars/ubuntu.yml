@@ -1,0 +1,12 @@
+---
+neutron_server_apt_packages:
+  - neutron-server
+  - neutron-plugin-ml2
+  - neutron-linuxbridge-agent
+  - neutron-dhcp-agent
+  - neutron-metadata-agent
+
+neutron_self_service_l3_agent_package: neutron-l3-agent
+
+neutron_compute_node_apt_packages:
+  - neutron-linuxbridge-agent

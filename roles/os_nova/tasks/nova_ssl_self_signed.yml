@@ -1,0 +1,3 @@
+---
+- include: nova_ssl_generate.yml
+  when: inventory_hostname == groups['nova_api'][0]

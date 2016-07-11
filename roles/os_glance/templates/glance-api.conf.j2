@@ -1,0 +1,47 @@
+[DEFAULT]
+bind_host = {{ glance_api_bind_host }}
+bind_port = {{ glance_api_service_port }}
+{% if glance_service_proto == "https"%}
+cert_file = {{ glance_ssl_cert }}
+key_file = {{ glance_ssl_key }}
+{% endif %}
+http_keepalive = True
+registry_host = {{ glance_registry_host }}
+registry_port = {{ glance_registry_port }}
+registry_client_protocol = {{ glance_service_proto }}
+{% if glance_service_proto == "https" %}
+registry_client_insecure = {{ glance_ssl_insecure | bool }}
+{% endif %}
+
+[image_format]
+disk_formats = ami,ari,aki,vhd,vmdk,raw,qcow2,vdi,iso,root-tar
+
+[glance_store]
+default_store = {{ glance_default_store }}
+{% set glance_available_stores = [ glance_default_store ] + glance_additional_stores %}
+stores = {% for backend in glance_available_stores %}{{ backend }}{% if not loop.last%},{% endif %}{% endfor %}
+
+{% if 'file' in glance_available_stores %}
+filesystem_store_datadir = {{ glance_fs_store_datadir }}
+{% endif %}
+
+[database]
+connection = mysql+pymysql://{{ glance_database_user }}:{{ glance_database_password }}@{{ mysql_server_address }}/{{ glance_database_name }}
+backend = sqlalchemy
+
+[keystone_authtoken]
+insecure = {{ keystone_ssl_insecure | bool }}
+auth_uri = {{ keystone_service_internaluri }}
+auth_url = {{ keystone_service_adminuri }}
+memcached_servers = {{ memcached_servers }}
+auth_type = password
+project_domain_name = "{{ glance_service_project_domain }}"
+user_domain_name = "{{ glance_service_user_domain }}"
+project_name = {{ glance_service_project }}
+username = {{ glance_service_user }}
+password = {{ glance_identity_password }}
+token_cache_time = 300
+revocation_cache_time = 60
+
+[paste_deploy]
+flavor = keystone

@@ -1,0 +1,6 @@
+---
+dashboard_apt_packages:
+  - openstack-dashboard
+
+dashboard_ubuntu_themes:
+  - openstack-dashboard-ubuntu-theme

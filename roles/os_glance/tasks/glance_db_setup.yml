@@ -1,0 +1,5 @@
+---
+- name: Execute glance DB sync
+  command: "glance-manage db_sync"
+  become: yes
+  become_user: "{{ glance_default_system_username }}"

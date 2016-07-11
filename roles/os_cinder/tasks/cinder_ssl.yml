@@ -1,0 +1,3 @@
+---
+- include: cinder_ssl_self_signed.yml
+  when: cinder_ssl_user_cert is not defined or cinder_ssl_user_key is not defined
