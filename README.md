@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Short Description
 -----------------
 A `unofficial fork` from the official openstack ansible playbooks to install Openstack components from the official repository (The original using `git` and github to build Openstack from source code). 
@@ -13,21 +12,24 @@ How to use the playbook
 #### The simplest way: `ansible-playbook -i inventory.ini -e @user_secret.yml setup-everything.yml`
 
 #### The hard way:
-Preparing environment: `ansible-playbook -i inventory.ini -e @user_secret.yml setup-infra.yml`
-Database Server: `ansible-playbook -i inventory.ini -e @user_secret.yml os-database.yml`
-Identity Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-keystone-setup.yml`
-Image Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-glance-setup.yml`
-Compute Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-nova-setup.yml`
-Network Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-neutron-setup.yaml`
-Block Storage Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-cinder-setup.yml`
-Dashboard:  `ansible-playbook -i inventory.ini -e @user_secret.yml os-dashboard-setup.yml`
+
+- Preparing environment: `ansible-playbook -i inventory.ini -e @user_secret.yml setup-infra.yml`
+- Database Server: `ansible-playbook -i inventory.ini -e @user_secret.yml os-database.yml`
+- Identity Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-keystone-setup.yml`
+- Image Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-glance-setup.yml`
+- Compute Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-nova-setup.yml`
+- Network Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-neutron-setup.yaml`
+- Block Storage Service: `ansible-playbook -i inventory.ini -e @user_secret.yml os-cinder-setup.yml`
+- Dashboard:  `ansible-playbook -i inventory.ini -e @user_secret.yml os-dashboard-setup.yml`
 
 TO DO
 ------
+
 * Update Deployment Topologies
 
 11/07/2016
 ----------
+
 * `lvm` is the only backend for cinder supported at this time
 * Supported network scenario: provider
 * Supported provider network type: vlan, flat
@@ -38,8 +40,5 @@ TO DO
 
 Under Development
 -----------------
+
 This is not the fist time I write a playbook to install Openstack environment but is one that I work in a 'proper procedures', so I will update as soon as I fixed issues and implemented a new things. Any comments please reach me at d0m0reg00dthing@gmail.com.
-=======
-# openstack-playbook
-Ansible playbooks to install Openstack
->>>>>>> d611b75c05eebfe8da7052c9e545843402fc2499
