@@ -2,9 +2,9 @@ Short Description
 -----------------
 A `unofficial fork` from [the official openstack ansible playbooks] (github.com/openstack/openstack-ansible) to install Openstack components (The original using `git` and github to build Openstack from source code). 
 
-All packages will be installed from appropriate repository except `python-openstackclient` because of ([this bug](https://bugs.launchpad.net/python-openstackclient/+bug/1560157) ignoring `.
+All packages will be installed from appropriate repository except `python-openstackclient` because of ([this bug](https://bugs.launchpad.net/python-openstackclient/+bug/1560157). 
 
-I have also faced the same problem with `python-neutronclient` ([detailed bug] (https://bugs.launchpad.net/python-neutronclient/+bug/1538959)) but I failed to resolve using pip install with `--upgrade` options. At the end of that link I saw problem was fixed and merged to the master, I hope this fix will be available in pip soon. Till that time, we have to patch code manually from the code in the link below.
+I have also faced the same problem with `python-neutronclient` ([detailed bug] (https://bugs.launchpad.net/python-neutronclient/+bug/1538959)) but I failed to resolve using pip install with `--upgrade` option. At the end of that link I saw problem was fixed and merged to the master, I hope this fix will be available in pip soon. Till that time, we have to patch code manually from the code in the link below.
 
 How to use the playbook
 -----------------------
@@ -42,4 +42,4 @@ TO DO
 Under Development
 -----------------
 
-This is not the fist time I write a playbook to install Openstack environment but is one that I work in a 'proper procedures', so I will update as soon as I fixed issues and implemented a new things. Any comments please reach me at d0m0reg00dthing@gmail.com.
+This is not the fist time I write a playbook to install Openstack environment but is one that I work in a 'proper procedures', so I will update as soon as I fix issues and implement a new things. Any comment please reach me at d0m0reg00dthing@gmail.com.
