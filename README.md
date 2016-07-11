@@ -32,12 +32,12 @@ TO DO
 ----------
 
 * `lvm` is the only backend for cinder supported at this time
-* Supported network scenario: provider
-* Supported provider network type: vlan, flat
-* Supported tentnat network: None
-* Supported mechanism: linuxbridge
-* Non HA (single controller) architecture
-* Supported OS: Ubuntu 14.04
+* Supported network scenario: `provider`
+* Supported provider network type: `vlan, flat`
+* Supported tentnat network: `None`
+* Supported mechanism: `linuxbridge`
+* `Non HA` (single controller) architecture
+* Supported OS: `Ubuntu 14.04`
 
 Under Development
 -----------------
