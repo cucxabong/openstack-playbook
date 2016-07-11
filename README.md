@@ -42,4 +42,4 @@ TO DO
 Under Development
 -----------------
 
-This is not the fist time I write a playbook to install Openstack environment but is one that I work in a 'proper procedures', so I will update as soon as I fix issues and implement a new things. Any comment please reach me at d0m0reg00dthing@gmail.com.
+This is not the fist time I write a playbook to install Openstack environment but is one that I work in a 'proper procedures' way, so I will update as soon as I fix issues and implement a new things. Any comment please reach me at d0m0reg00dthing@gmail.com.
