@@ -184,16 +184,21 @@ neutron_service_project_domain: "{{ os_default_project_domain }}"
 
 ## Network Architecture
 # Supported value is in ['provider', 'self-service']
-neutron_network_options: provider
+neutron_network_options: self-service
 
 ## Neutron Provider Network Options
-neutron_provider_mechanism_drivers: linuxbridge
+neutron_mechanism_drivers: linuxbridge
 
 neutron_tenant_networks:
+  service_plugins: router
+  type: vxlan
+  vxlan_overlay_interface: eth0
+  vxlan_vni_ranges: 1:1000
+
+neutron_allow_overlapping: True
 
 neutron_provider_networks:
-  #network_types: flat,vlan
-  network_types: flat
+  network_types: flat, vlan, vxlan, gre
   neutron_flat_networks: "flat-provider"
   #neutron_vlan_ranges: "vlan-provider:1100:1110"
   #network_mappings: "flat-provider:eth1, vlan-provider:eth2"

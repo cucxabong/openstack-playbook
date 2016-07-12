@@ -1,8 +1,8 @@
 [ml2]
-mechanism_drivers = linuxbridge
+mechanism_drivers = {{ neutron_mechanism_drivers }}
 type_drivers = {{ neutron_provider_networks.network_types }}
-{% if neutron_tenant_networks is defined %}
-tenant_network_types = {{ neutron_tenant_networks  }}
+{% if neutron_tenant_networks is defined and neutron_network_options == 'self-service' %}
+tenant_network_types = {{ neutron_tenant_networks.type  }}
 {% else %}
 tenant_network_types = 
 {% endif %}
@@ -16,6 +16,11 @@ flat_networks = {{ neutron_provider_networks.neutron_flat_networks }}
 [ml2_type_vlan]
 {% if neutron_provider_networks.neutron_vlan_ranges is defined %}
 network_vlan_ranges = {{ neutron_provider_networks.neutron_vlan_ranges }}
+{% endif %}
+
+{% if neutron_network_options == 'self-service' and neutron_tenant_networks.vxlan_vni_ranges is defined %}
+[ml2_type_vxlan]
+vni_ranges = {{ neutron_tenant_networks.vxlan_vni_ranges }}
 {% endif %}
 
 [securitygroup]

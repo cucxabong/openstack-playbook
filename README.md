@@ -28,6 +28,12 @@ TO DO
 
 * Update Deployment Topologies
 
+12/07/2016
+----------
+
+* Added `self-service` network
+* Supported tenant network type: `vxlan`
+
 11/07/2016
 ----------
 

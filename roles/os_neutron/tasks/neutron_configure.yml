@@ -52,4 +52,13 @@
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
   notify:
-    - Restart neutron-metadata-agent service 
+    - Restart neutron-metadata-agent service
+
+- name: place 'l3-agent.ini'
+  template:
+    src: "l3_agent.ini.j2"
+    dest: "/etc/neutron/l3_agent.ini"
+    owner: "{{ neutron_default_system_username }}"
+    group: "{{ neutron_default_system_group }}"
+  notify: Restart neutron-l3-agent service
+  when: inventory_hostname in groups['neutron_network']

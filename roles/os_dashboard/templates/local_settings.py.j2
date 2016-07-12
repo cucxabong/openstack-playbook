@@ -49,15 +49,27 @@ OPENSTACK_CINDER_FEATURES = {
     'enable_backup': False,
 }
 OPENSTACK_NEUTRON_NETWORK = {
-    'enable_router': {{ horizon_enable_neutron_router | bool }},
-    'enable_quotas': {{ horizon_enable_neutron_quotas }},
-    'enable_ipv6': {{ horizon_enable_ipv6 | bool }},
+{% if neutron_network_options == "self-service" %}
+    'enable_router': False,
+    'enable_quotas': False,
+    'enable_ipv6': False,
     'enable_distributed_router': False,
-    'enable_ha_router': {{ horizon_enable_ha_router | bool }},
-    'enable_lb': {{ horizon_enable_neutron_lb | bool }},
-    'enable_firewall': {{ horizon_enable_neutron_fwaas | bool }},
-    'enable_vpn': {{ horizon_enable_neutron_vpnaas | bool }},
-    'enable_fip_topology_check': {{ horizon_enable_fip_topology_check }},
+    'enable_ha_router': False,
+    'enable_lb': False,
+    'enable_firewall': False,
+    'enable_vpn': False,
+    'enable_fip_topology_check': False,
+{% else %}
+    'enable_router': True,
+    'enable_quotas': False,
+    'enable_ipv6': False,
+    'enable_distributed_router': False,
+    'enable_ha_router': False,
+    'enable_lb': False,
+    'enable_firewall': False,
+    'enable_vpn': False,
+    'enable_fip_topology_check': False,
+{% endif %}
     # Neutron can be configured with a default Subnet Pool to be used for IPv4
     # subnet-allocation. Specify the label you wish to display in the Address
     # pool selector on the create subnet step if you want to use this feature.

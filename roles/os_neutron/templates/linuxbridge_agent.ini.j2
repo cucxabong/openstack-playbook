@@ -4,7 +4,18 @@ physical_interface_mappings = {{ neutron_provider_networks.network_mappings }}
 {% endif %}
 
 [vxlan]
+{% if neutron_tenant_networks.type == 'vxlan' and neutron_network_options == 'self-service' %}
+enable_vxlan = True
+
+{% else %}
 enable_vxlan = False
+{% endif %}
+local_ip = {{ hostvars[inventory_hostname]["ansible_" + neutron_tenant_networks.vxlan_overlay_interface]['ipv4']['address'] }}
+{% if 'l2population' in neutron_mechanism_drivers %}
+l2_population = True
+{% else %}
+l2_population = False
+{% endif %}
 
 [securitygroup]
 enable_security_group = True

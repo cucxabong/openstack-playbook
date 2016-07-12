@@ -65,3 +65,13 @@
   retries: 5
   delay: 2
   when: inventory_hostname in groups['neutron_server']
+
+- name: Restart neutron-l3-agent service
+  service:
+    name: "neutron-l3-agent"
+    state: "restarted"
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 2
+  when: inventory_hostname in groups['neutron_network']

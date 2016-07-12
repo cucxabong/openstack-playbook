@@ -1,14 +1,18 @@
 [DEFAULT]
 rpc_backend = rabbit
 auth_strategy = keystone
-{% if inventory_hostname in groups['neutron_server'] %}
 core_plugin = ml2
-service_plugins =
+{% if neutron_network_options == 'self-service' %}
+service_plugins = {{ neutron_tenant_networks.service_plugins }}
+allow_overlapping_ips = {{ neutron_allow_overlapping | bool }}
+{% endif %}
+{% if inventory_hostname in groups['neutron_server'] %}
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 {% if neutron_service_proto == "https" %}
 use_ssl = True
 {% endif %}
+
 [database]
 connection = mysql+pymysql://{{ neutron_database_user }}:{{ neutron_database_password }}@{{ mysql_server_address }}/{{ neutron_database_name }}
 

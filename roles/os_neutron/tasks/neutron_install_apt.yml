@@ -30,4 +30,4 @@
   until: packages_install|success
   retries: 5
   delay: 2
-  when: neutron_network_options == 'self-service' and inventory_hostname in groups['neutron_compute']
+  when: neutron_network_options == 'self-service' and inventory_hostname in groups['neutron_network']
