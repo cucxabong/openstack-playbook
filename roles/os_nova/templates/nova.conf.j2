@@ -72,7 +72,7 @@ novncproxy_base_url = http://controller:6080/vnc_auto.html
 
 [glance]
 api_servers = {{ glance_service_url }}
-api_insecure = {{ glance_service_proto | bool }}
+api_insecure = {{ glance_ssl_insecure | bool }}
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
