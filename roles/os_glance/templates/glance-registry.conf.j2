@@ -2,7 +2,7 @@
 bind_host = {{ glance_registry_host }}
 bind_port = {{ glance_registry_port }}
 http_keepalive = True
-{% if glance_ssl_insecure == "https" %}
+{% if glance_service_proto == "https" %}
 cert_file = "{{ glance_ssl_cert }}"
 key_file = "{{ glance_ssl_key }}"
 {% endif %}
