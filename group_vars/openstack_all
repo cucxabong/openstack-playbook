@@ -71,7 +71,7 @@ memcached_servers: "{% for host in groups['memcached'] %}{{ hostvars[host]['ansi
 ######################### Begin Identity Service #########################
 
 # Service protocol (http/https)
-keystone_service_proto: https
+keystone_service_proto: http
 keystone_service_adminuri_proto: "{{ keystone_service_proto }}"
 keystone_service_internaluri_proto: "{{ keystone_service_proto }}"
 keystone_service_publicuri_proto: "{{ keystone_service_proto }}"
@@ -109,7 +109,7 @@ keystone_service_publicurl: "{{ keystone_service_publicuri }}/v3"
 
 
 ######################### Begin Image Service #########################
-glance_service_proto: https
+glance_service_proto: http
 glance_ssl_insecure: True
 
 glance_api_service_port: 9292
@@ -138,8 +138,8 @@ glance_fs_store_datadir: "/var/lib/{{ glance_default_system_username }}/images"
 ######################### End Image Service #########################
 
 ######################### Begin Compute Service #########################
-nova_api_uri_proto: https
-nova_metadata_uri_proto: https
+nova_api_uri_proto: http
+nova_metadata_uri_proto: http
 nova_ssl_insecure: True
 
 nova_api_bind_port: 8774
@@ -166,7 +166,7 @@ nova_service_project_domain: "{{ os_default_project_domain }}"
 
 ######################### Begin Networking Service #########################
 
-neutron_service_proto: https
+neutron_service_proto: http
 neutron_ssl_insecure: True
 
 neutron_service_port: 9696
@@ -184,7 +184,9 @@ neutron_service_project_domain: "{{ os_default_project_domain }}"
 
 ## Network Architecture
 # Supported value is in ['provider', 'self-service']
-neutron_network_options: self-service
+neutron_network_options: provider
+
+neutron_provider_interface: eth1
 
 ## Neutron Provider Network Options
 neutron_mechanism_drivers: linuxbridge
@@ -198,11 +200,11 @@ neutron_tenant_networks:
 neutron_allow_overlapping: True
 
 neutron_provider_networks:
-  network_types: flat, vlan, vxlan, gre
+  network_types: flat
   neutron_flat_networks: "flat-provider"
+  network_mappings: "flat-provider:eth1"
   #neutron_vlan_ranges: "vlan-provider:1100:1110"
   #network_mappings: "flat-provider:eth1, vlan-provider:eth2"
-  network_mappings: "flat-provider:eth1"
 
 neutron_dnsmasq_config_file: "/etc/neutron/dnsmasq-neutron.conf"
 
@@ -215,7 +217,7 @@ neutron_dhcp_instance_mtu: 1400
 ######################### End Networking Service #########################
 
 # SSL
-cinder_service_ssl_enabled: True
+cinder_service_ssl_enabled: False
 cinder_ssl_insecure: True
 
 # User-provide SSL certificate
