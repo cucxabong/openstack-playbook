@@ -49,7 +49,7 @@ OPENSTACK_CINDER_FEATURES = {
     'enable_backup': False,
 }
 OPENSTACK_NEUTRON_NETWORK = {
-{% if neutron_network_options == "self-service" %}
+{% if neutron_network_options == "provider" %}
     'enable_router': False,
     'enable_quotas': False,
     'enable_ipv6': False,
