@@ -1,0 +1,5 @@
+---
+- name: Setting up HA Cluster Stack 
+  hosts: controller
+  roles:
+      - corosync_pacemaker
