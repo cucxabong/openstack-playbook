@@ -1,5 +1,5 @@
 ---
-- include: apt_install.yml
+- include: mariadb_apt_install.yml
   when: ansible_pkg_mgr == "apt"
 
 - include: yum_install.yml

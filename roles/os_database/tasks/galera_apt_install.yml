@@ -1,0 +1,46 @@
+---
+- name: install prerequisite packages
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "{{ galera_pre_apt_packages }}"
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+
+- name: add galera gpg key
+  apt_key:
+    keyserver: "{{ galera_mariadb_gpg.key_server }}"
+    id: "{{ galera_mariadb_gpg.key_id}}"
+    state: "present"
+
+- name: add mariadb 10.1 apt repository
+  apt_repository:
+    repo: "deb {{ galera_mariadb_apt_repo_url }} {{ ansible_lsb.codename }} main"
+    state: "present"
+    update_cache: yes
+
+- name: Preseed mariadb server password(s)
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items: "{{ mariadb_debconf_items }}"
+  no_log: True
+
+- name: install mariadb server version 10.1
+  apt:
+    name: "{{ galera_mariadb_server_apt_pkg }}"
+    state: "latest"
+  register: packages_install
+  until: packages_install|success
+  retries: 5
+  delay: 2
+
+#- name: ensure MariaDB service was stopped
+#  service:
+#    name: "{{ mariadb_service_name }}"
+#    state: "stopped"

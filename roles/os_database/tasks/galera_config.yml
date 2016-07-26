@@ -1,0 +1,19 @@
+---
+
+- name: Drop mariadb config(s)
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_items:
+    - src: "cluster.cnf.j2"
+      dest: "/etc/mysql/conf.d/cluster.cnf"
+    - src: "openstack.cnf.j2"
+      dest: "/etc/mysql/conf.d/openstack.cnf"
+    - src: "debian.cnf.j2"
+      dest: "/etc/mysql/debian.cnf"
+  notify: Restart galera cluster
+
+- meta: flush_handlers

@@ -1,6 +1,8 @@
 ---
-- name: install Database Service
-  hosts: db_all
+
+- name: install MariaDB Galera Cluster
+  hosts: database
   gather_facts: True
   roles:
-      - os_database
+    - os_database
+  

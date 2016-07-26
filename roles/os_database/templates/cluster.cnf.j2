@@ -1,0 +1,15 @@
+[mysqld]
+innodb_buffer_pool_size=122M
+binlog_format=ROW
+bind-address=0.0.0.0
+default-storage-engine=InnoDB
+innodb_autoinc_lock_mode=2
+innodb_flush_log_at_trx_commit=0
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_provider_options="gcache.size=300M; gcache.page_size=300M"
+wsrep_cluster_name="{{ galera_cluster_name }}"
+wsrep_node_name="{{ inventory_hostname }}"
+wsrep_node_address="{{ ansible_host }}"
+wsrep_cluster_address="gcomm://{{ galera_wsrep_cluster_address }}"
+wsrep_sst_method=rsync
+wsrep_on=ON

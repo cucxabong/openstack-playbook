@@ -1,0 +1,6 @@
+---
+- include: mariadb_install.yml
+  when: groups['database']|length == 1
+
+- include: galera_install.yml
+  when: groups['database']|length == 3

@@ -13,5 +13,3 @@
   notify: restart mariadb
 
 - meta: flush_handlers
-
-- include: mariadb_secure_installation.yml

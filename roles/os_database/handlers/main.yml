@@ -4,3 +4,13 @@
   service:
     name: "{{ mariadb_service_name }}"
     state: restarted
+
+- name: Restart galera cluster
+  service:
+    name: "mysql"
+    state: "restarted"
+    args: "{{ (inventory_hostname == galera_server_bootstrap_node) | ternary('--wsrep-new-cluster', '') }}"
+  register: galera_restart
+  until: galera_restart | success
+  retries: 3
+  delay: 5

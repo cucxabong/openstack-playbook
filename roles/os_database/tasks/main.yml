@@ -12,5 +12,8 @@
   with_first_found:
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
 
-- include: mariadb_install.yml
-- include: post_install.yml
+- include: database_install.yml
+- include: database_config.yml
+
+- include: database_secure_installation.yml
+  when: ansible_hostname == database_primary_node
