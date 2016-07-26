@@ -17,6 +17,7 @@ nodelist {
 	node { 
 		ring0_addr: {{ hostvars[n]['ansible_default_ipv4']['address'] }}
 		nodeid: {{ loop.index }}
+		name: {{ hostvars[n]['ansible_hostname'] }}
 	}
 {% endfor %}
 }

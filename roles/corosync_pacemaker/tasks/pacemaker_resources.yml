@@ -1,6 +1,16 @@
 ---
+
+- name: Check if cluster was ready
+  shell: >
+    crm status | grep "Current DC: NONE"
+  register: cluster_status
+  retries: 10
+  delay: 5
+  until: cluster_status.rc != 0
+  ignore_errors: True
+
 - name: setting up cluster properties
-  command: >
+  shell: >
     crm configure property {{ pacemaker_cluster_properties_string }}
 
 - name: enable resource stickiness

@@ -15,3 +15,5 @@
     regexp: "^START\ ?=\ ?no"
     replace: "START=yes"
     backup: True
+
+- meta: flush_handlers
