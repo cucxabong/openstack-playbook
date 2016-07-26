@@ -5,11 +5,11 @@
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
     -  "{{ ansible_distribution | lower }}.yml"
 
-# - Prepare Provider Network
-- include: infra_network.yml
-
 # - Prepare /etc/hosts
 - include: infra_etc_hosts.yml
+
+# - Prepare Provider Network
+- include: infra_network.yml
 
 # - NTP Services
 - include: infra_ntp.yml
@@ -17,10 +17,6 @@
 # Memcached
 - include: infra_memcached.yml
   when: inventory_hostname in groups['memcached']
-
-# Message Queue (rabbitmq)
-- include: infra_message_queue.yml
-  when: inventory_hostname in groups['rabbitmq']
 
 # - Repository + extra pkg
 - include: infra_repository.yml

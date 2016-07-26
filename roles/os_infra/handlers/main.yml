@@ -16,3 +16,13 @@
   until: service_restarted|success
   retries: 5
   delay: 1
+
+- name: restart rabbitmq-server
+  service:
+    name: "rabbitmq-server"
+    state: "restarted"
+    enabled: True
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 1
