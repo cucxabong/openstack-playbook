@@ -1,4 +1,3 @@
-Role's roles
 ------------
 
 Setting a cluster stack with corosync (Cluster's Communication System) & pacemaker (Cluster Resource Manager) to support Openstack High Availability deployment
@@ -20,4 +19,4 @@ This role going to do the following:
 		  - stonith-enabled: "false"
 		  - no-quorum-policy: "ignore"
 	* Adding resources:
-		- VIP Resource for 3 controller node
+		- VIP Resource for 3 controller nodes
