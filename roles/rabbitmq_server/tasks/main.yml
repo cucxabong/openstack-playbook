@@ -1,0 +1,10 @@
+---
+- name: Gather variables for each distribution
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+
+- include: rabbitmq_install.yml
+- include: rabbitmq_set_cookie.yml
+- include: rabbitmq_cluster.yml

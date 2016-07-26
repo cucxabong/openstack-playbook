@@ -1,0 +1,5 @@
+---
+- name: Setting up message queue service
+  hosts: rabbitmq
+  roles:
+      - rabbitmq_server

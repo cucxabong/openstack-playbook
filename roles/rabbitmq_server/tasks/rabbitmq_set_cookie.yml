@@ -1,0 +1,18 @@
+---
+- name: ensure rabbitmq-server was stopped
+  service: 
+    name: "{{ rabbitmq_server_service }}"
+    state: "stopped"
+
+- name: copy erlang cookie to all rabbitmq node(s)
+  copy:
+    src: "erlang.cookie"
+    dest: "/var/lib/rabbitmq/.erlang.cookie"
+    mode: "0400"
+    owner: "rabbitmq"
+    group: "rabbitmq"
+
+- name: ensure rabbitmq-server was started
+  service: 
+    name: "{{ rabbitmq_server_service }}"
+    state: "started"

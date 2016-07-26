@@ -1,0 +1,9 @@
+---
+- name: install rabbitmq-server
+  apt:
+    name: "{{ rabbitmq_server_apt_package }}"
+    state: "latest"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2

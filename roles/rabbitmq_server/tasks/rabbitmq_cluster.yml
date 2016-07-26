@@ -1,0 +1,29 @@
+---
+- name: check rabbitmq cluster status
+  shell: rabbitmqctl cluster_status | grep '{cluster_name,<<"{{ rabbitmq_cluster_name }}">>}'
+  register: result
+  failed_when: false
+  changed_when: false
+
+- name: change cluster name
+  command: rabbitmqctl set_cluster_name {{ rabbitmq_cluster_name }}
+  when: result.rc != 0 and ansible_hostname == rabbitmq_master_node
+
+- name: stop rabbitmq app on all node except master
+  shell: rabbitmqctl stop_app; sleep 5
+  when: "ansible_hostname != rabbitmq_master_node and result.rc != 0"
+
+- name: join all node to cluster
+  command: rabbitmqctl join_cluster --ram rabbit@{{ rabbitmq_master_node }}
+  when: "ansible_hostname != rabbitmq_master_node and result.rc != 0"
+
+- name: start rabbitmq app
+  command: rabbitmqctl start_app
+  when: "ansible_hostname != rabbitmq_master_node and result.rc != 0"
+
+- name: adding mirrored policy
+  rabbitmq_policy:
+    name: "ha-all"
+    pattern: '^(?!amq\.).*'
+    tags: "ha-mode=all"
+  when: ansible_hostname == rabbitmq_master_node

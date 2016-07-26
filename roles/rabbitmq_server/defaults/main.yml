@@ -1,0 +1,3 @@
+---
+rabbitmq_master_node: "{{ hostvars[groups['rabbitmq'][0]]['ansible_hostname'] }}"
+rabbitmq_cluster_name: openstack_message_cluster

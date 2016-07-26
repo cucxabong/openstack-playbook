@@ -1,0 +1,10 @@
+---
+- name: restart rabbitmq-server
+  service:
+    name: "{{ rabbitmq_server_service }}"
+    state: "restarted"
+    enabled: True
+  register: service_restarted
+  until: service_restarted|success
+  retries: 5
+  delay: 1
