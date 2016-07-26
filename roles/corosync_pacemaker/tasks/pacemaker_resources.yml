@@ -1,0 +1,13 @@
+---
+- name: setting up cluster properties
+  command: >
+    crm configure property {{ pacemaker_cluster_properties_string }}
+
+- name: enable resource stickiness
+  command: >
+    crm configure rsc_defaults resource-stickiness={{ resource_stickiness_value }}
+
+- name: create cluster resource
+  shell: >
+    crm resource status {{ item.name }} || crm configure primitive {{ item.name }} {{ item.string }}
+  with_items: "{{ pacemaker_resources }}"

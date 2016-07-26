@@ -1,0 +1,5 @@
+---
+corosync_pacemaker_apt_packages:
+  - pacemaker
+  - corosync
+  - fence-agents

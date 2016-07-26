@@ -1,0 +1,6 @@
+---
+- name: ensure pacemaker service started
+  service:
+    name: "{{ pacemaker_service_name }}"
+    state: "started"
+    enabled: True

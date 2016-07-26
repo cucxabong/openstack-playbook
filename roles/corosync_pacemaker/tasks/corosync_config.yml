@@ -1,0 +1,17 @@
+---
+- name: Drop corosync.conf
+  template:
+    src: "corosync.conf.j2"
+    dest: "/etc/corosync/corosync.conf"
+    backup: True
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart corosync
+
+- name: Enabled corosync service
+  replace:
+    dest: "/etc/default/corosync"
+    regexp: "^START\ ?=\ ?no"
+    replace: "START=yes"
+    backup: True

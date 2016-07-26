@@ -1,0 +1,6 @@
+---
+- name: restart corosync
+  service:
+    name: "{{ corosync_service_name }}"
+    state: "restarted"
+    enabled: True

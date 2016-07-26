@@ -1,0 +1,21 @@
+---
+resources_string: []
+ha_corosync_active_node: groups['controller'][0]
+corosync_service_name: "corosync"
+pacemaker_service_name: "pacemaker"
+pacemaker_cluster_properties:
+  - pe-warn-series-max: 1000
+  - pe-input-series-max: 1000
+  - pe-error-series-max: 1000
+  - cluster-recheck-interval: "5min"
+  - stonith-enabled: "false"
+  - no-quorum-policy: "ignore"
+
+pacemaker_primary_node: "{{ hostvars[groups['controller'][0]]['ansible_hostname'] }}"
+
+resource_stickiness_value: 100
+pacemaker_cluster_properties_string: "{% for item in pacemaker_cluster_properties %}{% for key, value in item.items() %}{{ key }}=\"{{ value }}\" {% endfor %}{% endfor %}"
+
+pacemaker_resources:
+  - name: "vip"
+    string: "ocf:heartbeat:IPaddr2 params ip={{ ha_virtual_ip_address }} cidr_netmask=24 op monitor interval=30s"
