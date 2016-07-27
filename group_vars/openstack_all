@@ -1,4 +1,8 @@
 ---
+
+cluster_virtual_ip_address: "172.16.201.200"
+
+
 apt_cache_timeout: 3600
 infras_network_interface_include_dir: "/etc/network/interfaces.d"
 
@@ -27,6 +31,8 @@ nova_use_neutron_networking: True
 infras_default_ntp_update_servers:
   - 0.debian.pool.ntp.org
   - 1.debian.pool.ntp.org
+
+infras_ntp_prefer_update_server: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[groups['controller'][0]]['ansible_host'] }}{% endif %}"
 
 ######################### End Time Synchronization Service #################################
 
@@ -57,6 +63,8 @@ os_admin_credential_path: "/root/admin-openrc"
 # Service Project Info
 os_service_project_name: "service"
 os_service_project_domain: "{{ os_default_project_domain }}"
+
+os_controller_primary_node: "{{ groups['controller'][0] }}"
 
 ######################### End Cluster Parameter #########################
 

@@ -11,6 +11,10 @@
     state: present
     update_cache: yes
   with_items: "{{ infra_extra_repositories }}"
+  register: update_apt_cache
+  until: update_apt_cache|success
+  retries: 5
+  delay: 1
 
 - name: upgrade system
   apt:
@@ -26,6 +30,7 @@
   poll: 0
   when: '"linux-image" in system_upgrade.stdout'
   register: reboot_server
+  ignore_errors: True
 
 - name: wait for server to boot up
   wait_for:

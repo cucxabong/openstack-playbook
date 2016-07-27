@@ -1,11 +1,9 @@
-{% if inventory_hostname in groups['keystone_all'] %}
+{% if inventory_hostname in groups['controller'] %}
 {% for i in infras_default_ntp_update_servers %}
 server {{ i }} iburst
 {% endfor %}
 {% else%}
-{% for j in groups['keystone_all'] %}
-server {{ j }} iburst
-{% endfor %}
+server {{ infras_ntp_prefer_update_server }} iburst
 {% endif %}
 keyfile /etc/chrony/chrony.keys
 commandkey 1
