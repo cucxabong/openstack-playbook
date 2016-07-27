@@ -18,7 +18,7 @@ enabled_apis=osapi_compute,metadata
 {% if nova_metadata_uri_proto == "https" %}
 {% set nova_enabled_ssl_apis = nova_enabled_ssl_apis + ["metadata"] %}
 {% endif %}
-{% if (nova_api_uri_proto == "https" or nova_metadata_uri_proto == "https") and inventory_hostname in groups['nova_api'] %}
+{% if (nova_api_uri_proto == "https" or nova_metadata_uri_proto == "https") and inventory_hostname in groups['controller'] %}
 enabled_ssl_apis ={% for ssl_api in nova_enabled_ssl_apis %} {{ ssl_api }}{% if not loop.last %},{% endif %}{% endfor %}
 
 ssl_key_file = "{{ nova_ssl_key }}"
@@ -28,12 +28,12 @@ rpc_backend = rabbit
 auth_strategy = keystone
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
-osapi_compute_listen = {{ nova_api_bind_host }}
+#osapi_compute_listen = {{ nova_api_bind_host }}
 osapi_compute_listen_port = {{ nova_api_bind_port }}
-metadata_listen = {{ nova_metadata_bind_host }}
+#metadata_listen = {{ nova_metadata_bind_host }}
 metadata_listen_port = {{ nova_metadata_bind_port }}
 my_ip = {{ ansible_host }}
-{% if inventory_hostname in groups['nova_api'] %}
+{% if inventory_hostname in groups['controller'] %}
 [api_database]
 connection = mysql+pymysql://{{ nova_database_user }}:{{ nova_database_password }}@{{ mysql_server_address }}/{{ nova_api_database_name }}
 
@@ -42,7 +42,7 @@ connection = mysql+pymysql://{{ nova_database_user }}:{{ nova_database_password 
 {% endif %}
 
 [oslo_messaging_rabbit]
-rabbit_host = {{ rabbitmq_server }}
+rabbit_hosts = {{ rabbitmq_servers }}
 rabbit_userid = {{ rabbitmq_auth_user }}
 rabbit_password = {{ rabbitmq_auth_password }}
 
@@ -89,7 +89,7 @@ region_name = {{ neutron_service_region }}
 project_name = {{ neutron_service_project }}
 username = {{ neutron_service_user }}
 password = {{ neutron_service_password }}
-{% if inventory_hostname in groups['nova_api'] %}
+{% if inventory_hostname in groups['controller'] %}
 service_metadata_proxy = True
 metadata_proxy_shared_secret = {{ network_metadata_secret }}
 {% endif %}
