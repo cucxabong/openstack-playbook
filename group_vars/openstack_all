@@ -18,7 +18,7 @@ mysql_server_bind_port: 3306
 ######################### Begin Message Queue #########################
 
 rabbitmq_auth_user: openstack
-rabbitmq_server: "{{ hostvars[groups['rabbitmq'][0]].ansible_host }}"
+rabbitmq_servers: "{% for svr in groups['rabbitmq'] %}{{ hostvars[svr]['ansible_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
 
 ######################### End Message Queue #########################
 
