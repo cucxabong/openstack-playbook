@@ -1,7 +1,7 @@
 ---
 # SSL Options
 glance_ssl_self_signed_regen: False
-glance_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ ansible_host }}"
+glance_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ glance_api_bind_host }}"
 glance_ssl_dir: "/etc/glance/ssl"
 glance_ssl_cert: "{{ glance_ssl_dir }}/glance.pem"
 glance_ssl_key: "{{ glance_ssl_dir }}/glance.key"
