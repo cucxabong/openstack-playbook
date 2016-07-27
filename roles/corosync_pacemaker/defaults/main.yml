@@ -18,4 +18,4 @@ pacemaker_cluster_properties_string: "{% for item in pacemaker_cluster_propertie
 
 pacemaker_resources:
   - name: "vip"
-    string: "ocf:heartbeat:IPaddr2 params ip={{ ha_virtual_ip_address }} cidr_netmask=24 op monitor interval=30s"
+    string: "ocf:heartbeat:IPaddr2 params ip={{ cluster_virtual_ip_address }} cidr_netmask=24 op monitor interval=30s"

@@ -7,7 +7,7 @@
   retries: 10
   delay: 5
   until: cluster_status.rc != 0
-  ignore_errors: True
+  failed_when: False
 
 - name: setting up cluster properties
   shell: >

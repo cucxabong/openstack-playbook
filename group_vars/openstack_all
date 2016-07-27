@@ -1,6 +1,6 @@
 ---
 
-cluster_virtual_ip_address: "172.16.201.200"
+cluster_virtual_ip_address: "192.168.201.200"
 
 
 apt_cache_timeout: 3600
