@@ -2,7 +2,7 @@
 
 - name: ensure keystone admin service up and running
   wait_for:
-    host: "{{ hostvars[groups['keystone_all'][0]].ansible_host}}"
+    host: "{{ keystone_admin_bind_address }}"
     port: "{{ keystone_admin_port }}"
     state: started
     timeout: 60

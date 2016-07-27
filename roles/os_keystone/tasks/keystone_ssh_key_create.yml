@@ -1,0 +1,16 @@
+---
+- name: generate RSA keypair
+  user:
+    name: "{{ keystone_system_user_name }}"
+    shell: "{{ keystone_system_shell }}"
+    generate_ssh_key: True
+
+- name: Read public key
+  slurp:
+    src: "{{ keystone_system_homedir }}/.ssh/id_rsa.pub"
+  register: keystone_pub
+  changed_when: False
+
+- name: Register a fact for the keystone public key 
+  set_fact:
+    keystone_pubkey: "{{ keystone_pub.content }}"

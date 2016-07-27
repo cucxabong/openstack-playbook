@@ -1,0 +1,7 @@
+---
+
+- name: Distribute public key to all other controller
+  authorized_key:
+    user: "{{ keystone_system_user_name }}"
+    key: "{{ hostvars[item]['keystone_pubkey'] | b64decode }}"
+  with_items: "{{ groups['controller'] }}"

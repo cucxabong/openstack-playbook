@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 
-<VirtualHost {{ keystone_public_bind_address }}:{{ keystone_service_port }}>
+#<VirtualHost {{ keystone_public_bind_address }}:{{ keystone_service_port }}>
+<VirtualHost 0.0.0.0:{{ keystone_service_port }}>
     WSGIDaemonProcess keystone-public processes=5 threads=1 user={{ keystone_system_user_name }} group={{ keystone_system_user_group }} display-name=%{GROUP}
     WSGIProcessGroup keystone-public
     WSGIScriptAlias / /usr/bin/keystone-wsgi-public
@@ -26,7 +27,8 @@
     </Directory>
 </VirtualHost>
 
-<VirtualHost {{ keystone_admin_bind_address }}:{{ keystone_admin_port }}>
+#<VirtualHost {{ keystone_admin_bind_address }}:{{ keystone_admin_port }}>
+<VirtualHost 0.0.0.0:{{ keystone_admin_port }}>
     WSGIDaemonProcess keystone-admin processes=5 threads=1 user={{ keystone_system_user_name }} group={{ keystone_system_user_group }} display-name=%{GROUP}
     WSGIProcessGroup keystone-admin
     WSGIScriptAlias / /usr/bin/keystone-wsgi-admin

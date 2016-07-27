@@ -1,4 +1,5 @@
 ---
+
 - name: Place Keystone.conf
   template:
     src: "keystone.conf.j2"
@@ -7,4 +8,4 @@
     - Restart Apache
     
 - include: keystone_client_config.yml
-  when: inventory_hostname == groups['keystone_all'][0]
+  when: inventory_hostname == os_controller_primary_node

@@ -1,21 +1,20 @@
 ---
 - name: Install and Configure Keystone
-  hosts: keystone_all
+  hosts: controller
   pre_tasks:
     - name: Create DB for service
       mysql_db:
         login_user: root
-        login_host: localhost
+        login_host: "{{ mysql_server_address }}"
         login_password: "{{ mariadb_root_password }}"
         name: "{{ keystone_database_name }}"
         state: present
-      when: inventory_hostname == groups['keystone_all'][0]
-      delegate_to: "{{ groups['db_all'][0] }}"
-      
+      when: ansible_hostname == hostvars[os_controller_primary_node]['ansible_hostname']
+
     - name: Grant access to keystone DB
       mysql_user:
         login_user: root
-        login_host: localhost
+        login_host: "{{ mysql_server_address }}"
         login_password: "{{ mariadb_root_password }}"
         name: "{{ keystone_database_user }}"
         password: "{{ keystone_mysql_password }}"
@@ -25,7 +24,6 @@
       with_items:
         - "localhost"
         - "%"
-      when: inventory_hostname == groups['keystone_all'][0]
-      delegate_to: "{{ groups['db_all'][0] }}"
+      when: ansible_hostname == hostvars[os_controller_primary_node]['ansible_hostname']
   roles:
     - os_keystone

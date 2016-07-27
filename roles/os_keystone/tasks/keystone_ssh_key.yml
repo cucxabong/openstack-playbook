@@ -1,0 +1,3 @@
+---
+- include: keystone_ssh_key_create.yml
+- include: keystone_ssh_key_distribute.yml

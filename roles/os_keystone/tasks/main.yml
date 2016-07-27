@@ -6,15 +6,15 @@
     - "{{ ansible_distribution | lower }}.yml"
 
 - include: keystone_install.yml
+- include: keystone_ssh_key.yml
 - include: keystone_apache.yml
 - include: keystone_post.yml
 - include: keystone_db_setup.yml
-  when: inventory_hostname == groups['keystone_all'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: keystone_fernet.yml
-  when: inventory_hostname == groups['keystone_all'][0]
-
+  when: inventory_hostname == os_controller_primary_node
 - meta: flush_handlers
 
 - include: keystone_service_setup.yml
-  when: inventory_hostname == groups['keystone_all'][0]
+  when: inventory_hostname == os_controller_primary_node

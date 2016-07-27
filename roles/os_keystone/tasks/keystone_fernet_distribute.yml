@@ -1,0 +1,9 @@
+---
+
+- name: Distribute the fernet key repository
+  command: >
+    rsync -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' -avzr {{ keystone_fernet_tokens_key_repository }}/ \
+    {{ keystone_system_user_name }}@{{ hostvars[item]['ansible_host'] }}:{{ keystone_fernet_tokens_key_repository }}
+  become: yes
+  become_user: "{{ keystone_system_user_name }}"
+  with_items: "{{ groups['controller'][1:] }}"

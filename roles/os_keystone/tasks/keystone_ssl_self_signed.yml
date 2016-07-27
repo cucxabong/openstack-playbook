@@ -1,3 +1,6 @@
 ---
 - include: keystone_ssl_key_create.yml
-  when: inventory_hostname == groups['keystone_all'][0]
+  when: inventory_hostname == os_controller_primary_node
+
+# TODO
+# Copy certificate to the others controller

@@ -3,7 +3,7 @@
 # SSL Options
 keystone_ssl_self_signed_regen: False
 #keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
-keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+keystone_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ keystone_admin_bind_address }}"
 keystone_ssl_cert: "/etc/ssl/certs/keystone.pem"
 keystone_ssl_key: "/etc/ssl/private/keystone.key"
 keystone_ssl_protocol: "ALL -SSLv2 -SSLv3"
@@ -20,7 +20,8 @@ keystone_database_user: keystone
 keystone_system_user_name: keystone
 keystone_system_user_group: keystone
 keystone_system_service_name: apache2
-
+keystone_system_homedir: "/var/lib/keystone"
+keystone_system_shell: "/bin/bash"
 keystone_rpc_backend: rabbit
 keystone_token_provider: fernet
 
