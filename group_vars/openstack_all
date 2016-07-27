@@ -9,7 +9,8 @@ infras_network_interface_include_dir: "/etc/network/interfaces.d"
 ######################### Begin SQL Database Server #########################
 
 mysql_root_user: "root"
-mysql_server_address: "{{ hostvars[groups['db_all'][0]].ansible_host }}"
+mysql_server_address: "{% if groups['database']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[groups['database'][0]]['ansible_host'] }}{% endif%}"
+
 mysql_server_bind_port: 3306
 
 ######################### End SQL Database Server #########################

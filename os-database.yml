@@ -5,4 +5,3 @@
   gather_facts: True
   roles:
     - os_database
-  

@@ -21,6 +21,10 @@
     repo: "deb {{ galera_mariadb_apt_repo_url }} {{ ansible_lsb.codename }} main"
     state: "present"
     update_cache: yes
+  register: update_apt_cache
+  until: update_apt_cache|success
+  retries: 5
+  delay: 2
 
 - name: Preseed mariadb server password(s)
   debconf:
