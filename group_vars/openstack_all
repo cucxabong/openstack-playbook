@@ -122,10 +122,10 @@ glance_service_proto: http
 glance_ssl_insecure: True
 
 glance_api_service_port: 9292
-glance_api_bind_host: "{{ hostvars[groups['glance'][0]].ansible_host }}"
+glance_api_bind_host: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[os_controller_primary_node]['ansible_host'] }}{% endif %}"
 
 glance_registry_port: 9191
-glance_registry_host: "{{ hostvars[groups['glance'][0]].ansible_host }}"
+glance_registry_host: "{{ glance_api_bind_host }}"
 
 glance_service_url: "{{ glance_service_proto }}://{{ glance_api_bind_host }}:{{ glance_api_service_port }}"
 glance_service_region: "{{ os_default_service_region }}"
