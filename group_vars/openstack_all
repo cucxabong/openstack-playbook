@@ -152,8 +152,8 @@ nova_metadata_uri_proto: http
 nova_ssl_insecure: True
 
 nova_api_bind_port: 8774
-nova_api_bind_host: "{{ hostvars[groups['nova_api'][0]].ansible_host }}"
-nova_metadata_bind_host: "{{ hostvars[groups['nova_api'][0]].ansible_host }}"
+nova_api_bind_host: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[os_controller_primary_node]['ansible_host'] }}{% endif %}"
+nova_metadata_bind_host: "{{ nova_api_bind_host }}"
 
 nova_metadata_bind_port: 8775
 nova_service_adminuri: "{{ nova_api_uri_proto }}://{{ nova_api_bind_host }}:{{ nova_api_bind_port }}"
