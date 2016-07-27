@@ -1,6 +1,6 @@
 ---
 - name: Install & Configure Glance Image Service 
-  hosts: glance
+  hosts: controller
   pre_tasks:
     - name: Create DB for Glance Image Service 
       mysql_db:
