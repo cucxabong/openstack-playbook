@@ -1,5 +1,7 @@
 ---
 - include: setup-infra.yml
+- include: setup-message-queue.yml
+- include: setup-corosync-pacemaker.yml
 - include: os-database.yml
 - include: os-keystone-setup.yml
 - include: os-glance-setup.yml
