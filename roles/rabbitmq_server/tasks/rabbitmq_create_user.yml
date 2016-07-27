@@ -1,0 +1,10 @@
+---
+- name: create user for openstack services
+  rabbitmq_user:
+    user: "{{ rabbitmq_auth_user }}"
+    password: "{{ rabbitmq_auth_password }}"
+    vhost: "/"
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
