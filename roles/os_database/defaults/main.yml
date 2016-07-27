@@ -3,5 +3,3 @@
 galera_wsrep_cluster_address: "{% for host in groups['database'] %}{{ hostvars[host]['ansible_host'] }}{% if not loop.last %},{% endif %}{% endfor %}"
 galera_server_bootstrap_node: "{{ groups['database'][0] }}"
 galera_cluster_name: "openstack_database"
-
-database_primary_node: "{{ hostvars[groups['database'][0]]['ansible_hostname'] }}"
