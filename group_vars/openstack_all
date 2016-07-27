@@ -11,7 +11,7 @@ infras_network_interface_include_dir: "/etc/network/interfaces.d"
 mysql_root_user: "root"
 mysql_server_address: "{% if groups['database']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[groups['database'][0]]['ansible_host'] }}{% endif%}"
 mysql_server_bind_port: 3306
-database_primary_node: "{{ hostvars[groups['database'][0]] }}"
+database_primary_node: "{{ groups['database'][0] }}"
 
 ######################### End SQL Database Server #########################
 
@@ -90,8 +90,8 @@ keystone_admin_port: 35357
 keystone_service_port: 5000
 
 # Service Binding Address
-keystone_admin_bind_address: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
-keystone_public_bind_address: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+keystone_admin_bind_address: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[os_controller_primary_node]['ansible_host'] }}{% endif %}"
+keystone_public_bind_address: "{{ keystone_admin_bind_address }}"
 
 # Service Region
 keystone_service_region: "{{ os_default_service_region }}"

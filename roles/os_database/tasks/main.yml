@@ -16,4 +16,4 @@
 - include: database_config.yml
 
 - include: database_secure_installation.yml
-  when: ansible_hostname == hostvars[database_primary_node]['ansible_hostname']
+  when: inventory_hostname == database_primary_node
