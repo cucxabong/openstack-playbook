@@ -1,5 +1,4 @@
 ---
-- debug: msg="{{ rabbitmq_servers }}"
 - name: Gather variables for each distribution
   include_vars: "{{ item }}"
   with_first_found:
