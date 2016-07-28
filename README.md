@@ -28,6 +28,13 @@ TO DO
 
 * Update Deployment Topologies
 
+27/07/2016
+----------
+* Added mirrored-queue in rabbitmq-server
+* Added HA (3 controllers) using corosync & pacemaker
+* Added VIP pacemaker resource
+* Added MariaDB Galera Cluster multi-master
+
 12/07/2016
 ----------
 
