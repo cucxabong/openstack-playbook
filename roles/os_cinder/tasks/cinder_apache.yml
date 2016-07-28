@@ -2,7 +2,7 @@
 - name: ensure cinder-api port enable
   lineinfile:
     dest: "/etc/apache2/ports.conf"
-    line: "Listen {{ cinder_service_bind_host }}:{{ cinder_service_port }}"
+    line: "Listen {{ cinder_service_port }}"
     state: present
 
 - name: enable/disable apache2 ssl module

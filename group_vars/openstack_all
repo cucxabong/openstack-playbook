@@ -236,7 +236,7 @@ cinder_ssl_insecure: True
 
 ## Block Storage Service
 cinder_service_port: 8776
-cinder_service_bind_host: "{{ hostvars[groups['cinder_api'][0]].ansible_host }}"
+cinder_service_bind_host: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[os_controller_primary_node]['ansible_host'] }}{% endif %}"
 cinder_service_project: "{{ os_service_project_name }}"
 cinder_service_project_domain: "{{ os_default_project_domain }}"
 cinder_service_name: cinder

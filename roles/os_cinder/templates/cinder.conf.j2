@@ -27,7 +27,7 @@ glance_api_insecure = {{ glance_ssl_insecure | bool }}
 connection = mysql+pymysql://{{ cinder_database_user }}:{{ cinder_database_password }}@{{ mysql_server_address }}/{{ cinder_database_name }}
 
 [oslo_messaging_rabbit]
-rabbit_host = {{ rabbitmq_server }}
+rabbit_hosts = {{ rabbitmq_servers }}
 rabbit_userid = {{ rabbitmq_auth_user }}
 rabbit_password = {{ rabbitmq_auth_password }}
 

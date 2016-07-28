@@ -1,14 +1,15 @@
 ---
 
 - include: cinder_service_setup.yml
-  when: inventory_hostname == groups['cinder_api'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: cinder_configuration.yml
+
 - include: cinder_apache.yml
-  when: inventory_hostname in groups['cinder_api']
+  when: inventory_hostname in groups['controller']
 
 - include: cinder_db_setup.yml
-  when: inventory_hostname == groups['cinder_api'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: cinder_ssl.yml
-  when: inventory_hostname in groups['cinder_api']
+  when: inventory_hostname in groups['controller'] and cinder_service_ssl_enabled
