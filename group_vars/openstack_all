@@ -268,8 +268,8 @@ cinder_backends:
     volume_group: cinder-volumes
     volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
     physical_devices:
-      - /dev/sdb
-      - /dev/sdc
+      - /dev/vda
+      - /dev/vdb
 
 # Speed up volume deletion process
 #

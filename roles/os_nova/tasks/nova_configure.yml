@@ -15,6 +15,6 @@
     dest: "/etc/nova/nova-compute.conf"
     owner: "nova"
     group: "nova"
-  when: inventory_hostname in groups['nova_compute']
+  when: inventory_hostname in groups['compute']
   notify:
     - restart nova compute service

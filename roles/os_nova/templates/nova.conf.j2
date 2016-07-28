@@ -66,7 +66,7 @@ insecure = {{ cinder_ssl_insecure }}
 [vnc]
 vncserver_listen = $my_ip
 vncserver_proxyclient_address = $my_ip
-{% if inventory_hostname in groups['nova_compute'] %}
+{% if inventory_hostname in groups['compute'] %}
 novncproxy_base_url = http://controller:6080/vnc_auto.html
 {% endif %}
 

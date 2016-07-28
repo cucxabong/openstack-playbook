@@ -15,4 +15,4 @@
   service:
     name: "nova-compute"
     state: restarted
-  when: inventory_hostname in groups['nova_compute']
+  when: inventory_hostname in groups['compute']

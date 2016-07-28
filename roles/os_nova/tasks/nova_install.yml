@@ -21,4 +21,4 @@
   delay: 2
   with_items:
     - "{{ nova_compute_apt_packages }}"
-  when: inventory_hostname in groups['nova_compute']
+  when: inventory_hostname in groups['compute']

@@ -6,6 +6,13 @@ All packages will be installed from appropriate repository except `python-openst
 
 I have also faced the same problem with `python-neutronclient` ([detailed bug] (https://bugs.launchpad.net/python-neutronclient/+bug/1538959)) but I failed to resolve using `pip install` with `--upgrade` option. At the end of that link I saw problem was fixed and merged to the master, I hope this fix will be available in pip soon. Till that time, we have to patch code manually from the code in the link above.
 
+To simplify the deployment and scriptting, my script only support 2 deploymet architectures:
+1. Single controller
+	TODO: Update deployment architecture
+
+2. High Availability Controller (3 controllers)
+	TODO: Update deployment architecture
+
 How to use the playbook
 -----------------------
 
@@ -15,6 +22,8 @@ How to use the playbook
 #### The hard way:
 
 - **Preparing environment:** `ansible-playbook -i inventory.ini -e @user_secret.yml setup-infra.yml`
+- **Message Queue:** `ansible-playbook -i inventory.ini -e @user_secret.yml setup-message-queue.yml`
+- **Corosync & Pacemaker:** `ansible-playbook -i inventory.ini -e @user_secret.yml setup-corosync-pacemaker.yml`
 - **Database Server:** `ansible-playbook -i inventory.ini -e @user_secret.yml os-database.yml`
 - **Identity Service:** `ansible-playbook -i inventory.ini -e @user_secret.yml os-keystone-setup.yml`
 - **Image Service:** `ansible-playbook -i inventory.ini -e @user_secret.yml os-glance-setup.yml`
@@ -23,10 +32,9 @@ How to use the playbook
 - **Block Storage Service:** `ansible-playbook -i inventory.ini -e @user_secret.yml os-cinder-setup.yml`
 - **Dashboard:**  `ansible-playbook -i inventory.ini -e @user_secret.yml os-dashboard-setup.yml`
 
-TO DO
-------
-
-* Update Deployment Topologies
+28/07/2016
+----------
+* Finished HA Deployment
 
 27/07/2016
 ----------
