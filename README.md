@@ -7,6 +7,7 @@ All packages will be installed from appropriate repository except `python-openst
 I have also faced the same problem with `python-neutronclient` ([detailed bug] (https://bugs.launchpad.net/python-neutronclient/+bug/1538959)) but I failed to resolve using `pip install` with `--upgrade` option. At the end of that link I saw problem was fixed and merged to the master, I hope this fix will be available in pip soon. Till that time, we have to patch code manually from the code in the link above.
 
 To simplify the deployment and scriptting, my script only support 2 deploymet architectures:
+
 1. Single controller
 	TODO: Update deployment architecture
 
