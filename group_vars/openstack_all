@@ -284,7 +284,7 @@ cinder_volume_clear_size: 50
 
 ########################### Begin Horizon Dashboard ###########################
 
-horizon_keystone_host: "{{ hostvars[groups['keystone_all'][0]].ansible_host }}"
+horizon_keystone_host: "{{ keystone_public_bind_address }}"
 horizon_keystone_endpoint: "{{ keystone_service_internalurl }}"
 horizon_keystone_default_domain: "{{ os_default_domain_name }}"
 horizon_keystone_multidomain_support: True
