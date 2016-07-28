@@ -33,6 +33,7 @@
     dest: "/etc/neutron/dhcp_agent.ini"
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
+  when: inventory_hostname in groups['controller']
   notify:
     - Restart neutron-dhcp-agent service 
 
@@ -42,6 +43,7 @@
     dest: "{{ neutron_dnsmasq_config_file }}"
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
+  when: inventory_hostname in groups['controller']
   notify:
     - Restart neutron-dhcp-agent service 
 
@@ -51,6 +53,7 @@
     dest: "/etc/neutron/metadata_agent.ini"
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
+  when: inventory_hostname in groups['controller']
   notify:
     - Restart neutron-metadata-agent service
 
@@ -61,4 +64,4 @@
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
   notify: Restart neutron-l3-agent service
-  when: inventory_hostname in groups['compute']
+  when: inventory_hostname in groups['compute'] and neutron_network_options == "self-service"
