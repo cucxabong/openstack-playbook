@@ -2,7 +2,7 @@
 
 # SSL Options
 nova_ssl_self_signed_regen: False
-nova_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['nova_api'][0]].ansible_host }}"
+nova_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ nova_api_bind_host }}"
 nova_ssl_dir: "/etc/nova/ssl"
 nova_ssl_cert: "{{ nova_ssl_dir }}/nova.pem"
 nova_ssl_key: "{{ nova_ssl_dir }}/nova.key"

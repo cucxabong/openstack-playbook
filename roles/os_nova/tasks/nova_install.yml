@@ -9,7 +9,7 @@
   delay: 2
   with_items:
     - "{{ nova_server_apt_packages }}"
-  when: inventory_hostname in groups['nova_api']
+  when: inventory_hostname in groups['controller']
 
 - name: install nova compute packages
   apt:

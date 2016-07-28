@@ -9,7 +9,7 @@
     - nova-scheduler
     - nova-conductor
     - nova-novncproxy
-  when: inventory_hostname in groups['nova_api']
+  when: inventory_hostname in groups['controller']
 
 - name: restart nova compute service
   service:

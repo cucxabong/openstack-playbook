@@ -2,9 +2,9 @@
 - include: nova_configure.yml
 
 - include: nova_db_setup.yml
-  when: inventory_hostname == groups['nova_api'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: nova_service_setup.yml
-  when: inventory_hostname == groups['nova_api'][0]
+  when: inventory_hostname == os_controller_primary_node
   
 - meta: flush_handlers
