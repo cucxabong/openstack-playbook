@@ -2,10 +2,10 @@
 - include: neutron_configure.yml
 
 - include: neutron_service_setup.yml
-  when: inventory_hostname == groups['neutron_server'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: neutron_db_setup.yml
-  when: inventory_hostname == groups['neutron_server'][0]
+  when: inventory_hostname == os_controller_primary_node
 
 - include: neutron_ssl.yml
   when: neutron_service_proto == "https"

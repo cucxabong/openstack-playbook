@@ -12,7 +12,7 @@
     - neutron-linuxbridge-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 - name: Restart neutron compute services
   service:
@@ -24,7 +24,7 @@
   delay: 2
   with_items:
     - neutron-linuxbridge-agent
-  when: inventory_hostname in groups['neutron_compute']
+  when: inventory_hostname in groups['compute']
 
 - name: Restart neutron-server service 
   service:
@@ -34,7 +34,7 @@
   until: service_restarted|success
   retries: 5
   delay: 2
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 - name: Restart neutron-linuxbridge-agent service 
   service:
@@ -44,7 +44,7 @@
   until: service_restarted|success
   retries: 5
   delay: 2
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 - name: Restart neutron-dhcp-agent service 
   service:
@@ -54,7 +54,7 @@
   until: service_restarted|success
   retries: 5
   delay: 2
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 - name: Restart neutron-metadata-agent service 
   service:
@@ -64,7 +64,7 @@
   until: service_restarted|success
   retries: 5
   delay: 2
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 - name: Restart neutron-l3-agent service
   service:
@@ -74,4 +74,4 @@
   until: service_restarted|success
   retries: 5
   delay: 2
-  when: inventory_hostname in groups['neutron_network']
+  when: inventory_hostname in groups['compute']

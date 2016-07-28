@@ -8,7 +8,7 @@
   retries: 5
   delay: 2
   with_items: "{{ neutron_server_apt_packages }}"
-  when: inventory_hostname in groups['neutron_server']
+  when: inventory_hostname in groups['controller']
 
 
 - name: Install neutron apt packages on compute nodes
@@ -20,7 +20,7 @@
   retries: 5
   delay: 2
   with_items: "{{ neutron_compute_node_apt_packages }}"
-  when: inventory_hostname in groups['neutron_compute']
+  when: inventory_hostname in groups['compute']
 
 - name: install l3-agent (self-service network) on network node
   apt:
@@ -30,4 +30,4 @@
   until: packages_install|success
   retries: 5
   delay: 2
-  when: neutron_network_options == 'self-service' and inventory_hostname in groups['neutron_network']
+  when: neutron_network_options == 'self-service' and inventory_hostname in groups['compute']

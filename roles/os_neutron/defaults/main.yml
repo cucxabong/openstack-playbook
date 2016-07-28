@@ -1,7 +1,7 @@
 ---
 # SSL Options
 neutron_ssl_self_signed_regen: False
-neutron_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ hostvars[groups['neutron_server'][0]].ansible_host }}"
+neutron_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ neutron_service_binding }}"
 neutron_ssl_dir: "/etc/neutron/ssl"
 neutron_ssl_cert: "{{ neutron_ssl_dir }}/neutron.pem"
 neutron_ssl_key: "{{ neutron_ssl_dir }}/neutron.key"

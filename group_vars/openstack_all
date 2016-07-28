@@ -1,6 +1,6 @@
 ---
 
-cluster_virtual_ip_address: "192.168.201.200"
+cluster_virtual_ip_address: "172.16.36.200"
 
 
 apt_cache_timeout: 3600
@@ -177,9 +177,10 @@ nova_service_project_domain: "{{ os_default_project_domain }}"
 
 neutron_service_proto: http
 neutron_ssl_insecure: True
-
+neutron_service_binding: "{% if groups['controller']|length == 3 %}{{ cluster_virtual_ip_address }}{% else %}{{ hostvars[os_controller_primary_node]['ansible_host'] }}{% endif %}"
 neutron_service_port: 9696
-neutron_service_adminuri: "{{ neutron_service_proto }}://{{ hostvars[groups['neutron_server'][0]].ansible_host }}:{{ neutron_service_port }}"
+
+neutron_service_adminuri: "{{ neutron_service_proto }}://{{ neutron_service_binding }}:{{ neutron_service_port }}"
 neutron_service_adminurl: "{{ neutron_service_adminuri }}"
 neutron_service_region: "{{ os_default_service_region }}"
 neutron_service_user: neutron

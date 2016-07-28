@@ -5,17 +5,15 @@
     - name: Create DB for neutron
       mysql_db:
         login_user: root
-        login_host: localhost
+        login_host: "{{ mysql_server_address }}"
         login_password: "{{ mariadb_root_password }}"
         name: "{{ neutron_database_name }}"
         state: present
-      when: inventory_hostname == groups['neutron_server'][0]
-      delegate_to: "{{ groups['db_all'][0] }}"
-
+      when: inventory_hostname == os_controller_primary_node
     - name: Grant access to neutron user
       mysql_user:
         login_user: root
-        login_host: localhost
+        login_host: "{{ mysql_server_address }}"
         login_password: "{{ mariadb_root_password }}"
         name: "{{ neutron_database_user }}"
         password: "{{ neutron_database_password }}"
@@ -25,7 +23,6 @@
       with_items:
         - "localhost"
         - "%"
-      when: inventory_hostname == groups['neutron_server'][0]
-      delegate_to: "{{ groups['db_all'][0] }}"
+      when: inventory_hostname == os_controller_primary_node
   roles:
     - os_neutron

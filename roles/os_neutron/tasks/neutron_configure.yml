@@ -61,4 +61,4 @@
     owner: "{{ neutron_default_system_username }}"
     group: "{{ neutron_default_system_group }}"
   notify: Restart neutron-l3-agent service
-  when: inventory_hostname in groups['neutron_network']
+  when: inventory_hostname in groups['compute']

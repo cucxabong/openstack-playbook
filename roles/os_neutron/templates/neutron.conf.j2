@@ -6,7 +6,7 @@ core_plugin = ml2
 service_plugins = {{ neutron_tenant_networks.service_plugins }}
 allow_overlapping_ips = {{ neutron_allow_overlapping | bool }}
 {% endif %}
-{% if inventory_hostname in groups['neutron_server'] %}
+{% if inventory_hostname in groups['controller'] %}
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 {% if neutron_service_proto == "https" %}
@@ -40,7 +40,7 @@ insecure = {{ nova_ssl_insecure }}
 root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 
 [oslo_messaging_rabbit]
-rabbit_host = {{ rabbitmq_server }}
+rabbit_hosts = {{ rabbitmq_servers }}
 rabbit_userid = {{ rabbitmq_auth_user }}
 rabbit_password = {{ rabbitmq_auth_password }}
 
