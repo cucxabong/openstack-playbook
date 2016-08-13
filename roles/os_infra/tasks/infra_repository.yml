@@ -4,6 +4,7 @@
     id: "{{ item.key_id }}"
     keyserver: "{{ item.key_server }}"
   with_items: "{{ infra_extra_repositories }}"
+  when: infra_extra_repositories is defined
 
 - name: add extra repository
   apt_repository:
@@ -15,6 +16,7 @@
   until: update_apt_cache|success
   retries: 5
   delay: 1
+  when: infra_extra_repositories is defined
 
 - name: upgrade system
   apt:
