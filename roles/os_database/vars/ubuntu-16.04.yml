@@ -1,0 +1,28 @@
+---
+galera_pre_apt_packages:
+  - python-software-properties
+  - software-properties-common
+
+galera_mariadb_apt_repo_url: http://mirror.jmu.edu/pub/mariadb/repo/10.1/ubuntu/
+galera_mariadb_server_apt_pkg: mariadb-server
+galera_mariadb_gpg:
+  key_server: "keyserver.ubuntu.com"
+  key_id: "0xcbcb082a1bb943db"
+
+maridb_pakages:
+  - python-mysqldb
+  - mariadb-server
+
+mariadb_server_package_name: mariadb-server
+mariadb_service_name: mysql
+mariadb_server_config_file: /etc/mysql/mariadb.conf.d/50-server.cnf
+
+mariadb_debconf_items:
+  - question: "mysql-server/root_password"
+    name: "{{ mariadb_server_package_name }}"
+    value: "{{ mariadb_root_password }}"
+    vtype: string
+  - question: "mysql-server/root_password_again"
+    name: "{{ mariadb_server_package_name }}"
+    value: "{{ mariadb_root_password }}"
+    vtype: string
